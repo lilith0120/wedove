@@ -1,28 +1,71 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" @scroll.passive="get_top($event)">
+    <Header :class="{isTop: !isTop}"></Header>
+
+    <div id="try"></div>
+    <!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from "./components/Header/Header";
 
 export default {
-  name: 'App',
+  name: "App",
+
   components: {
-    HelloWorld
+    Header
+  },
+
+  data() {
+    return {
+      isTop: true
+    };
+  },
+
+  methods: {
+    get_top(event) {
+      let d = event.target.scrollTop;
+      console.log(d);
+      if (d > 0) {
+        this.isTop = false;
+      } else {
+        this.isTop = true;
+      }
+    }
   }
-}
+};
 </script>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.isTop {
+  opacity: 0.94;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.15);
+}
+
+#try {
+  height: 200%;
+  background-color: #94d7b6;
 }
 </style>
