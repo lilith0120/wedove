@@ -16,17 +16,31 @@
     </div>
 
     <template v-if="isLogin">
-      <div></div>
-    </template>
-    <template v-else>
       <div id="h_user">
         <span class="iconfont icon-home" @click="go_home">
           <span class="label">首页</span>
         </span>
 
+        <span class="iconfont icon-user" @click="go_myhome">
+          <span class="label">{{username}}</span>
+        </span>
+
         <el-divider direction="vertical"></el-divider>
 
+        <span class="iconfont icon-letter r-icon" @click="go_home"></span>
+        <span class="iconfont icon-setting r-icon" @click="go_home"></span>
+        <span class="iconfont icon-edit r-icon" @click="go_home"></span>
+      </div>
+    </template>
+    <template v-else>
+      <div id="h_unuser">
+        <span class="iconfont icon-home" @click="go_home">
+          <span class="label">首页</span>
+        </span>
+
         <span class="label" @click="go_register">注册</span>
+        <el-divider direction="vertical"></el-divider>
+        <span class="label" @click="go_login">登录</span>
       </div>
     </template>
   </div>
@@ -41,7 +55,8 @@ export default {
   data() {
     return {
       search_key: "",
-      isLogin: false
+      isLogin: true,
+      username: "行露的吸血鬼"
     };
   },
 
@@ -58,7 +73,11 @@ export default {
     },
 
     go_register() {
-      window.open("/register", "_blank");
+      this.$router.push("/register");
+    },
+
+    go_login() {
+      console.log(2333);
     },
 
     search() {
@@ -139,16 +158,36 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 20%;
+  margin-left: 14%;
   height: 100%;
-  width: 150px;
+  width: 400px;
 }
 
-.icon-home {
+#h_unuser {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: flex;
+  align-items: center;
+  margin-left: 20%;
+  height: 100%;
+  width: 200px;
+}
+
+.iconfont {
   display: flex;
   align-items: center;
   font-size: 22px;
-  width: 40%;
+}
+
+.icon-home {
+  width: 80px;
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+}
+
+.icon-user {
+  /* width: 30%; */
+  white-space: nowrap;
   /* border: 1px red solid;
   box-sizing: border-box; */
 }
@@ -158,14 +197,18 @@ export default {
   font-size: 14px;
 }
 
-.icon-home:hover,
+.iconfont:hover,
 .label:hover {
   cursor: pointer;
   color: #fa7d3c;
 }
 
 .el-divider--vertical {
-  margin: 0 10%;
+  margin: 0 7%;
   height: 60%;
+}
+
+.r-icon {
+  margin-right: 5%;
 }
 </style>
