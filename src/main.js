@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router/router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import './assets/icon/iconfont.css'
 import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://yjcxlr.cn:3000/'

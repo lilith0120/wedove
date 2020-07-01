@@ -1,0 +1,58 @@
+{
+  "id": "1916968",
+  "name": "wedove",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4933206",
+      "name": "信封邮件",
+      "font_class": "letter",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "5640058",
+      "name": "搜索",
+      "font_class": "search",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "6241505",
+      "name": "设置",
+      "font_class": "setting",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "10605731",
+      "name": "密码",
+      "font_class": "pswd",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "11372640",
+      "name": "编辑",
+      "font_class": "edit",
+      "unicode": "e8ac",
+      "unicode_decimal": 59564
+    },
+    {
+      "icon_id": "15643730",
+      "name": "客户管理",
+      "font_class": "user",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "15643738",
+      "name": "首页",
+      "font_class": "home",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    }
+  ]
+}

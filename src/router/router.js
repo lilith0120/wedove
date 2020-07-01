@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 引入组件
+const home = () => import('../components/Home/Home')
+const register = () => import('../components/Register/Register')
 
 const router = new VueRouter({
     mode: 'history',
@@ -11,6 +13,11 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
+            component: home
+        },
+        {
+            path: '/register',
+            component: register
         }
     ]
 })
