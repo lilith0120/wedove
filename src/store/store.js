@@ -9,7 +9,7 @@ const store = {
         },
 
         remove_token(state) {
-            state.token = ""
+            state.token = "";
         }
     }
 }

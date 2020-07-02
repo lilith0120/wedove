@@ -27,9 +27,33 @@
 
         <el-divider direction="vertical"></el-divider>
 
-        <span class="iconfont icon-letter r-icon" @click="go_home"></span>
-        <span class="iconfont icon-setting r-icon" @click="go_home"></span>
-        <span class="iconfont icon-edit r-icon" @click="go_home"></span>
+        <el-dropdown>
+          <span class="iconfont icon-letter"></span>
+          <el-dropdown-menu slot="dropdown" class="message">
+            <el-dropdown-item>
+              @我的
+              <el-badge class="mark" :value="at_me" :max="99" />
+            </el-dropdown-item>
+            <el-dropdown-item>
+              评论
+              <el-badge class="mark" :value="commit" :max="99" />
+            </el-dropdown-item>
+            <el-dropdown-item>
+              赞
+              <el-badge class="mark" :value="support" :max="99" />
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown>
+          <span class="iconfont icon-setting"></span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="go_setting">账号设置</el-dropdown-item>
+            <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <span class="iconfont icon-edit" title="快捷发布微博" @click="go_home"></span>
       </div>
     </template>
     <template v-else>
@@ -55,14 +79,18 @@ export default {
   data() {
     return {
       search_key: "",
-      isLogin: true,
-      username: "行露的吸血鬼"
+      isLogin: false,
+      username: "行露的吸血鬼",
+      at_me: 12,
+      commit: 233,
+      support: 77
     };
   },
 
   created() {
     if (store.state.token != "") {
       this.isLogin = true;
+      // 这里拿数据
     }
   },
 
@@ -78,6 +106,18 @@ export default {
 
     go_login() {
       console.log(2333);
+    },
+
+    go_myhome() {
+      console.log(2);
+    },
+
+    go_setting() {
+      console.log(3);
+    },
+
+    logout() {
+      store.mutations.remove_token(store.state);
     },
 
     search() {
@@ -120,7 +160,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 5%;
+  margin-left: 2%;
   height: 100%;
   width: 30.5%;
 }
@@ -158,7 +198,7 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 14%;
+  margin-left: 18%;
   height: 100%;
   width: 400px;
 }
@@ -168,7 +208,7 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 20%;
+  margin-left: 24%;
   height: 100%;
   width: 200px;
 }
@@ -208,7 +248,35 @@ export default {
   height: 60%;
 }
 
-.r-icon {
+.el-dropdown {
   margin-right: 5%;
+}
+
+.el-dropdown-menu {
+  padding: 0;
+}
+
+.message {
+  width: 147px;
+}
+
+.el-dropdown-menu__item {
+  margin-top: 1%;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.el-dropdown-menu__item--divided::before {
+  height: 0;
+}
+
+.el-dropdown-menu__item:hover {
+  color: #fa7d3c;
+  background-color: #f2f2f5;
+}
+
+.mark {
+  height: 36px;
 }
 </style>
