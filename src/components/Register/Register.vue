@@ -14,30 +14,72 @@
               <span class="r_label">
                 <span class="req">*</span>用户名:
               </span>
-              <input v-model="name" class="l_input" />
+              <input v-model="name" class="l_input" @focus="name_focus" @blur="name_blur" />
+              <span class="input_tips" v-show="name_tip">
+                <img class="input_img" src="../../assets/info.png" />请输入3-10位字符
+              </span>
+              <span class="input_tips input_warn" v-show="name_warn">
+                <img class="input_img" src="../../assets/warn.png" />请输入正确格式的用户名
+              </span>
             </div>
+
             <div class="input">
               <span class="r_label">
                 <span class="req">*</span>设置密码:
               </span>
-              <input v-model="pswd" class="l_input" />
+              <input v-model="pswd" class="l_input" @focus="pswd_focus" @blur="pswd_blur" />
+              <span class="input_tips" v-show="pswd_tip">
+                <img class="input_img" src="../../assets/info.png" />请输入6-16位字符
+              </span>
+              <span class="input_tips input_warn" v-show="pswd_warn">
+                <img class="input_img" src="../../assets/warn.png" />请输入正确格式的密码
+              </span>
             </div>
+
             <div class="input">
               <span class="r_label">
                 <span class="req">*</span>邮箱:
               </span>
-              <input v-model="email" class="l_input" />
+              <input v-model="email" class="l_input" @focus="email_focus" @blur="email_blur" />
+              <span class="input_tips" v-show="email_tip">
+                <img class="input_img" src="../../assets/info.png" />请输入邮箱
+              </span>
+              <span class="input_tips input_warn" v-show="email_warn">
+                <img class="input_img" src="../../assets/warn.png" />请输入正确格式的邮箱
+              </span>
             </div>
+
             <div class="input">
               <span class="r_label">
                 <span class="req">*</span>验证码:
               </span>
-              <button class="code">获取验证码</button>
-              <input v-model="code" class="l_input code_input" />
+              <button
+                class="code"
+                :class="{is: !isSend, isNot: isSend}"
+                @click="get_code"
+                :disabled="isSend"
+              >
+                <template v-if="!isSend">获取验证码</template>
+                <template v-else>{{time}}s后重新获取</template>
+              </button>
+              <input
+                v-model="code"
+                class="l_input code_input"
+                @focus="code_focus"
+                @blur="code_blur"
+              />
+              <span class="input_tips" v-show="code_tip">
+                <img class="input_img" src="../../assets/info.png" />请输入验证码
+              </span>
+              <span class="input_tips input_warn" v-show="code_warn">
+                <img class="input_img" src="../../assets/warn.png" />请输入验证码
+              </span>
             </div>
+
             <button id="bot_btn" @click="register">立即注册</button>
           </div>
         </div>
+
         <el-divider direction="vertical"></el-divider>
         <div id="right_body">
           <div id="login">
@@ -80,13 +122,132 @@ export default {
       name: "",
       pswd: "",
       email: "",
-      code: ""
+      code: "",
+      time: 60,
+      isSend: false,
+      name_tip: false,
+      name_warn: false,
+      pswd_tip: false,
+      pswd_warn: false,
+      email_tip: false,
+      email_warn: false,
+      code_tip: false,
+      code_warn: false
     };
   },
 
   methods: {
+    name_focus() {
+      this.name_tip = true;
+      this.name_warn = false;
+    },
+
+    name_blur() {
+      this.name_tip = false;
+      if (this.name == "" || this.name.length < 3 || this.name.length > 10) {
+        this.name_warn = true;
+      }
+    },
+
+    pswd_focus() {
+      this.pswd_tip = true;
+      this.pswd_warn = false;
+    },
+
+    pswd_blur() {
+      this.pswd_tip = false;
+      if (this.pswd == "" || this.pswd.length < 6 || this.pswd.length > 16) {
+        this.pswd_warn = true;
+      }
+    },
+
+    email_focus() {
+      this.email_tip = true;
+      this.email_warn = false;
+    },
+
+    email_blur() {
+      this.email_tip = false;
+      let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      if (this.email == "" || !reg.test(this.email)) {
+        this.email_warn = true;
+      }
+    },
+
+    code_focus() {
+      this.code_tip = true;
+      this.code_warn = false;
+    },
+
+    code_blur() {
+      this.code_tip = false;
+      if (this.code == "") {
+        this.code_warn = true;
+      }
+    },
+
+    get_code() {
+      alert("send");
+      this.isSend = true;
+      // this.$axios({
+      //   method: "",
+      //   url: ""
+      // }).then(re => {
+      //   console.log(re);
+      // });
+
+      let clock = setInterval(() => {
+        this.time--;
+        if (this.time == 0) {
+          this.isSend = false;
+          this.time = 60;
+          clearInterval(clock);
+        }
+      }, 1000);
+    },
+
     register() {
-      console.log(this.name);
+      if (this.name == "") {
+        this.name_warn = true;
+      }
+
+      if (this.pswd == "") {
+        this.pswd_warn = true;
+      }
+
+      if (this.email == "") {
+        this.email_warn = true;
+      }
+
+      if (this.code == "") {
+        this.code_warn = true;
+      }
+
+      if (
+        this.name_warn ||
+        this.pswd_warn ||
+        this.email_warn ||
+        this.code_warn
+      ) {
+        return;
+      }
+
+      let data = {
+        username: this.name,
+        password: this.pswd,
+        email: this.email,
+        code: this.code
+      };
+
+      console.log(data);
+
+      // this.$axios({
+      //   method: "",
+      //   url: "",
+      //   data: data
+      // }).then(re => {
+      //   console.log(re);
+      // });
     }
   }
 };
@@ -219,47 +380,48 @@ li {
   /* border: 1px red solid;
   box-sizing: border-box; */
   margin-top: 4%;
-  width: 65%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .req {
   font-family: "SimSun";
   color: #f00;
-  margin-right: 1%;
+  margin-right: 2.5%;
 }
 
 .input {
   width: 100%;
-  margin: 2% 0;
+  margin: 1.5% 0;
+  /* border: 1px red solid;
+  box-sizing: border-box; */
 }
 
 .r_label {
   /* border: 1px red solid;
   box-sizing: border-box; */
   display: inline-block;
-  width: 42.5%;
+  width: 27.5%;
   text-align: right;
-  margin-right: 3%;
+  margin-right: 1.5%;
 }
 
 .l_input {
   border: 1px #ccc solid;
   border-radius: 2px;
   height: 28px;
-  width: 52%;
+  width: 34%;
   box-shadow: 0px 1px 1px 0px #eaeaea inset;
 }
 
 .code_input {
-  margin-left: 2%;
-  width: 25%;
+  margin-left: 1.5%;
+  width: 17%;
 }
 
 .code {
-  width: 25%;
+  width: 15.5%;
   height: 28px;
   font-size: 12px;
   border: 1px #fff solid;
@@ -268,11 +430,15 @@ li {
   outline: 1px #efefef solid;
 }
 
-.code:hover {
+.is:hover {
   cursor: pointer;
   color: #fff;
   background-color: #ffa00a;
   outline-color: #ffa00a;
+}
+
+.isNot:hover {
+  cursor: no-drop;
 }
 
 .l_input:focus {
@@ -281,9 +447,9 @@ li {
 }
 
 #bot_btn {
-  margin-top: 12%;
-  margin-left: 43%;
-  width: 53%;
+  margin-top: 7%;
+  margin-left: 29%;
+  width: 34%;
   height: 40px;
   font-size: 16px;
   font-weight: bold;
@@ -296,5 +462,21 @@ li {
 #bot_btn:hover {
   cursor: pointer;
   background-color: #ffb941;
+}
+
+.input_tips {
+  align-items: center;
+  margin-left: 3%;
+  font-size: 12px;
+  color: #9c96a0;
+}
+
+.input_warn {
+  color: #e64141;
+}
+
+.input_img {
+  margin-right: 1%;
+  vertical-align: middle;
 }
 </style>

@@ -64,22 +64,41 @@
 
         <span class="label" @click="go_register">注册</span>
         <el-divider direction="vertical"></el-divider>
-        <span class="label" @click="go_login">登录</span>
+        <span class="label" @click="isShow = true">登录</span>
       </div>
     </template>
+
+    <el-dialog
+      title="账号登录"
+      class="dialog"
+      :visible.sync="isShow"
+      :close-on-click-modal="false"
+      v-if="isShow"
+      destroy-on-close
+      append-to-body
+      center
+    >
+      <Login></Login>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import store from "../../store/store";
+import Login from "../Login/Login";
 
 export default {
   name: "Header",
+
+  components: {
+    Login
+  },
 
   data() {
     return {
       search_key: "",
       isLogin: false,
+      isShow: false,
       username: "行露的吸血鬼",
       at_me: 12,
       commit: 233,
@@ -102,10 +121,6 @@ export default {
 
     go_register() {
       this.$router.push("/register");
-    },
-
-    go_login() {
-      console.log(2333);
     },
 
     go_myhome() {
@@ -278,5 +293,23 @@ export default {
 
 .mark {
   height: 36px;
+}
+
+.dialog >>> .el-dialog {
+  margin-top: 10.5% !important;
+  border-top: 2px #fa7f40 solid;
+  box-sizing: border-box;
+  width: 600px;
+  height: 55%;
+}
+
+.dialog >>> .el-dialog__title {
+  display: inline-block;
+  margin-top: 2.5%;
+  width: 33%;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 3px #f7691d solid;
+  line-height: 45px;
 }
 </style>
