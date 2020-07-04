@@ -21,6 +21,11 @@
       </el-form-item>
     </el-form>
 
+    <div id="remark">
+      <el-checkbox class="check" v-model="remember">记住我</el-checkbox>
+      <span id="f_pswd" @click="forget_pswd">忘记密码</span>
+    </div>
+
     <div slot="footer" id="footer">
       <el-button id="login_btn" @click="login">登录</el-button>
       <div id="register">
@@ -42,12 +47,45 @@ export default {
       user: "",
       name: "",
       email: "",
-      pswd: ""
+      pswd: "",
+      remember: false
     };
   },
 
+  created() {
+    this.get_cookie();
+  },
+
   methods: {
+    set_cookie(user, pswd, time) {
+      let date = new Date();
+      date.setTime(date.getTime() + time * 24 * 60 * 60 * 1000);
+      document.cookie = `user=${user};path=/;expires=${date.toLocaleString()}`;
+      document.cookie = `pswd=${pswd};path=/;expires=${date.toLocaleString()}`;
+    },
+
+    delete_cookie() {
+      this.set_cookie("", "", -1);
+    },
+
+    get_cookie() {
+      if (document.cookie.length > 0) {
+        let arr = document.cookie.split(";");
+        for (let i of arr) {
+          let a = i.split("=");
+          if (a[0] == " user") {
+            this.user = a[1];
+          } else if (a[0] == " pswd") {
+            this.pswd = a[1];
+          }
+        }
+      }
+    },
+
     login() {
+      this.name = "";
+      this.email = "";
+
       if (this.user == "") {
         this.$notify({
           title: "警告",
@@ -72,24 +110,39 @@ export default {
         return;
       }
 
+      let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      if (reg.test(this.user)) {
+        this.email = this.user;
+      } else {
+        this.name = this.user;
+      }
+
       let data = {
-        teamName: this.team_name,
-        introduction: this.team_intro
+        name: this.name,
+        email: this.email,
+        pswd: this.pswd
       };
 
       console.log(data);
 
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //     data: data
-      //   }).then(re => {
-      //     console.log(re)
-      //   });
+      // this.$axios({
+      //   method: "",
+      //   url: "",
+      //   data: data
+      // }).then(re => {
+      //   console.log(re);
+      //   if (re.errno == 0) {
+      // if (this.remember) {
+      //   this.set_cookie(this.user, this.pswd, 7);
+      // } else {
+      //   this.delete_cookie;
+      // }
+      //   }
+      // });
     },
 
-    go_register() {
-      this.$router.push("/register");
+    forget_pswd() {
+      alert(233);
     }
   }
 };
@@ -121,12 +174,32 @@ export default {
   border: 1px #ff8140 solid;
 }
 
+#remark {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: flex;
+  justify-content: space-between;
+  width: 42.5%;
+  margin: 1% auto;
+  font-size: 12px;
+}
+
+.check >>> .el-checkbox__label {
+  font-size: 12px;
+  padding-left: 10%;
+}
+
+#f_pswd:hover {
+  cursor: pointer;
+  color: #ff8140;
+}
+
 #footer {
   text-align: center;
 }
 
 #login_btn {
-  margin-top: 10%;
+  margin-top: 5%;
   width: 42.5%;
   color: #fff;
   background-color: #ff8140;

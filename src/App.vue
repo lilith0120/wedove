@@ -42,4 +42,9 @@ body {
   z-index: 10;
   overflow: auto;
 }
+
+::selection {
+  background: #ea7350;
+  color: #ffffff;
+}
 </style>
