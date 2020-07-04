@@ -51,7 +51,8 @@ export default {
   z-index: 10;
   overflow: auto;
   background-image: url("../../assets/page.jpg");
-  background-color: #94d7b6;
+  background-repeat: no-repeat;
+  background-color: #e0c99f;
 }
 
 .isTop {
@@ -66,7 +67,7 @@ export default {
 }
 
 #back {
-  background-color: #459a70;
+  background-color: #696e78;
   display: flex;
   justify-content: center;
   align-items: center;
