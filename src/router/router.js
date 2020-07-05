@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 // 引入组件
 const home = () => import('../components/Home/Home')
 const register = () => import('../components/Register/Register')
+const forget = () => import('../components/Forget_pswd/Forget')
 
 const router = new VueRouter({
     mode: 'history',
@@ -21,6 +22,11 @@ const router = new VueRouter({
             path: '/register',
             component: register,
             name: 'register'
+        },
+        {
+            path: '/forget',
+            component: forget,
+            name: 'forget'
         }
     ]
 })
@@ -28,7 +34,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (store.state.token != ""
         || to.path == '/'
-        || to.path == '/register') {
+        || to.path == '/register'
+        || to.path == '/forget') {
         next()
     }
     else {

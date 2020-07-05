@@ -23,7 +23,7 @@
 
     <div id="remark">
       <el-checkbox class="check" v-model="remember">记住我</el-checkbox>
-      <span id="f_pswd" @click="forget_pswd">忘记密码</span>
+      <a id="f_pswd" href="/forget">忘记密码</a>
     </div>
 
     <div slot="footer" id="footer">
@@ -139,10 +139,6 @@ export default {
       // }
       //   }
       // });
-    },
-
-    forget_pswd() {
-      alert(233);
     }
   }
 };
@@ -187,6 +183,11 @@ export default {
 .check >>> .el-checkbox__label {
   font-size: 12px;
   padding-left: 10%;
+}
+
+#f_pswd {
+  color: #333;
+  text-decoration: none;
 }
 
 #f_pswd:hover {

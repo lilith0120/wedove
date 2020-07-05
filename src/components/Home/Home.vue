@@ -2,7 +2,6 @@
   <div id="home" @scroll.passive="get_top($event)">
     <Header :class="{isTop: !isTop}"></Header>
     <!-- <router-view></router-view> -->
-    <div style="height:200%"></div>
     <el-backtop target="#home">
       <div id="back">
         <span class="iconfont icon-back"></span>
@@ -50,7 +49,7 @@ export default {
   width: 100%;
   z-index: 10;
   overflow: auto;
-  background-image: url("../../assets/page.jpg");
+  background: url("../../assets/page.jpg") scroll;
   background-repeat: no-repeat;
   background-color: #e0c99f;
 }
