@@ -1,28 +1,61 @@
 <template>
   <div id="setting">
     <div id="content">
-      <el-menu default-active="1" class="menu">
+      <el-menu :default-active="active" class="menu">
         <el-divider content-position="left">账号设置</el-divider>
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="go_msg">
           <i class="iconfont icon-my_message"></i>
           <span class="msg" slot="title">我的信息</span>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="go_avatar">
           <i class="iconfont icon-avatar"></i>
           <span class="msg" slot="title">修改头像</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="3" @click="go_pswd">
           <i class="iconfont icon-pswd"></i>
           <span class="msg" slot="title">修改密码</span>
         </el-menu-item>
       </el-menu>
+
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Setting"
+  name: "Setting",
+
+  data() {
+    return {
+      active: "1"
+    };
+  },
+
+  created() {
+    let url = window.location.pathname.split("/");
+    if (url[url.length - 1] == "pswd") {
+      this.active = "3";
+    } else if (url[url.length - 1] == "avatar") {
+      this.active = "2";
+    } else {
+      this.active = "1";
+    }
+  },
+
+  methods: {
+    go_msg() {
+      this.$router.push({ name: "change_msg" });
+    },
+
+    go_avatar() {
+      this.$router.push({ name: "change_avatar" });
+    },
+
+    go_pswd() {
+      this.$router.push({ name: "change_pswd" });
+    }
+  }
 };
 </script>
 
@@ -44,6 +77,7 @@ export default {
 #content {
   /* border: 1px red solid;
   box-sizing: border-box; */
+  display: flex;
   margin: 0 auto;
   margin-top: 5%;
   background-color: #fafafa;
@@ -61,7 +95,7 @@ export default {
 
 .menu {
   border: none;
-  width: 15.5%;
+  width: 20%;
   height: 100%;
   background-color: #f1f1f1;
   box-shadow: inset -13px 0px 10px -15px #8f8f8f;
@@ -95,6 +129,9 @@ export default {
 }
 
 .msg {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  line-height: 0;
   margin-left: 8%;
 }
 </style>
