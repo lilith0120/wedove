@@ -9,7 +9,7 @@
       <div id="r_title">通过邮箱验证码找回</div>
 
       <div id="f_step">
-        <el-steps class="step" :active="0" align-center>
+        <el-steps class="step" :active="active" align-center>
           <el-step title="验证邮箱号"></el-step>
           <el-step title="设置密码"></el-step>
           <el-step title="完成"></el-step>
@@ -17,28 +17,46 @@
       </div>
 
       <div id="r_body">
-        <div id="r_input">
-          <div class="input">
-            <span class="r_label">邮箱号:</span>
-            <input v-model="email" class="l_input" @focus="email_focus" @blur="email_blur" />
+        <transition-group name="slide-fade" mode="out-in">
+          <div class="r_input" v-show="active === 0" key="0">
+            <div class="input">
+              <span class="r_label">邮箱号:</span>
+              <input v-model="email" class="l_input" />
+            </div>
+
+            <div class="input">
+              <span class="r_label">验证码:</span>
+              <input v-model="code" class="l_input code_input" />
+              <button
+                class="code"
+                :class="{is: !isSend, isNot: isSend}"
+                @click="get_code"
+                :disabled="isSend"
+              >
+                <template v-if="!isSend">获取验证码</template>
+                <template v-else>{{time}}s后重新获取</template>
+              </button>
+            </div>
+
+            <button class="bot_btn" @click="go_next">下一步</button>
           </div>
 
-          <div class="input">
-            <span class="r_label">验证码:</span>
-            <input v-model="code" class="l_input code_input" @focus="code_focus" @blur="code_blur" />
-            <button
-              class="code"
-              :class="{is: !isSend, isNot: isSend}"
-              @click="get_code"
-              :disabled="isSend"
-            >
-              <template v-if="!isSend">获取验证码</template>
-              <template v-else>{{time}}s后重新获取</template>
-            </button>
+          <div class="r_input" v-show="active === 1" key="1">
+            <div class="input">
+              <span class="r_label">设置密码:</span>
+              <input type="password" v-model="pswd" class="n_input" />
+            </div>
+
+            <div class="input">
+              <span class="r_label">确认密码:</span>
+              <input type="password" v-model="r_pswd" class="n_input" />
+            </div>
+
+            <button class="t_btn" @click="go_next">确定</button>
           </div>
 
-          <button id="bot_btn" @click="register">立即注册</button>
-        </div>
+          <span id="back" v-show="active === 2" key="2">成功设置密码！{{t}}s后自动返回首页</span>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -52,43 +70,18 @@ export default {
     return {
       email: "",
       code: "",
+      pswd: "",
+      r_pswd: "",
       time: 60,
+      t: 5,
       isSend: false,
-      email_tip: false,
-      email_warn: false,
-      code_tip: false,
-      code_warn: false
+      active: 0
     };
   },
 
   methods: {
     go_home() {
       this.$router.push("/");
-    },
-
-    email_focus() {
-      this.email_tip = true;
-      this.email_warn = false;
-    },
-
-    email_blur() {
-      this.email_tip = false;
-      let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-      if (this.email == "" || !reg.test(this.email)) {
-        this.email_warn = true;
-      }
-    },
-
-    code_focus() {
-      this.code_tip = true;
-      this.code_warn = false;
-    },
-
-    code_blur() {
-      this.code_tip = false;
-      if (this.code == "") {
-        this.code_warn = true;
-      }
     },
 
     get_code() {
@@ -111,48 +104,98 @@ export default {
       }, 1000);
     },
 
-    register() {
-      if (this.name == "") {
-        this.name_warn = true;
+    go_next() {
+      if (this.active === 0) {
+        let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if (this.email == "" || !reg.test(this.email)) {
+          this.$notify({
+            title: "警告",
+            message: "请输入正确的邮箱号！",
+            type: "warning",
+            showClose: false,
+            duration: 2000
+          });
+
+          return;
+        }
+
+        if (this.code == "") {
+          this.$notify({
+            title: "警告",
+            message: "请输入验证码！",
+            type: "warning",
+            showClose: false,
+            duration: 2000
+          });
+
+          return;
+        }
+
+        let data = {
+          email: this.email,
+          code: this.code
+        };
+
+        console.log(data);
+
+        // this.$axios({
+        //   method: "",
+        //   url: "",
+        //   data: data
+        // }).then(re => {
+        //   console.log(re);
+        //   if (re.data.errno == 0) {
+        this.active++;
+        //   }
+        // });
+      } else if (this.active === 1) {
+        if (this.pswd == "") {
+          this.$notify({
+            title: "警告",
+            message: "请输入密码！",
+            type: "warning",
+            showClose: false,
+            duration: 2000
+          });
+
+          return;
+        }
+
+        if (this.r_pswd == "" || this.pswd != this.r_pswd) {
+          this.$notify({
+            title: "警告",
+            message: "两次密码请保持一致！",
+            type: "warning",
+            showClose: false,
+            duration: 2000
+          });
+
+          return;
+        }
+
+        let data = {
+          pswd: this.pswd
+        };
+
+        console.log(data);
+
+        // this.$axios({
+        //   method: "",
+        //   url: "",
+        //   data: data
+        // }).then(re => {
+        //   console.log(re);
+        //   if (re.data.errno == 0) {
+        this.active++;
+        setInterval(() => {
+          this.t--;
+          if (this.t == 0) {
+            this.$router.push("/");
+          }
+        }, 1000);
+        //   }
+        // });
       }
-
-      if (this.pswd == "") {
-        this.pswd_warn = true;
-      }
-
-      if (this.email == "") {
-        this.email_warn = true;
-      }
-
-      if (this.code == "") {
-        this.code_warn = true;
-      }
-
-      if (
-        this.name_warn ||
-        this.pswd_warn ||
-        this.email_warn ||
-        this.code_warn
-      ) {
-        return;
-      }
-
-      let data = {
-        username: this.name,
-        password: this.pswd,
-        email: this.email,
-        code: this.code
-      };
-
-      console.log(data);
-
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      //   data: data
-      // }).then(re => {
-      //   console.log(re);
-      // });
     }
   }
 };
@@ -244,10 +287,10 @@ export default {
   background-color: #fafafa;
 }
 
-#r_input {
+.r_input {
   /* border: 1px red solid;
   box-sizing: border-box; */
-  margin-top: 4%;
+  margin-top: 6%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -280,6 +323,15 @@ export default {
   box-shadow: 0px 1px 1px 0px #eaeaea inset;
 }
 
+.n_input {
+  border: 1px #ccc solid;
+  border-radius: 2px;
+  margin-left: 2%;
+  height: 33px;
+  width: 30%;
+  box-shadow: 0px 1px 1px 0px #eaeaea inset;
+}
+
 .code_input {
   width: 19%;
 }
@@ -287,12 +339,15 @@ export default {
 .code {
   margin-left: 1.5%;
   width: 13.5%;
-  height: 28px;
-  font-size: 12px;
-  border: 1px #fff solid;
+  height: 35px;
+  font-size: 14px;
+  color: #fff;
+  border: 1px #ff8140 solid;
+  background-color: #ff8140;
   box-sizing: border-box;
   border-radius: 2px;
-  outline: 1px #efefef solid;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  outline: none;
 }
 
 .is:hover {
@@ -302,35 +357,85 @@ export default {
   outline-color: #eb7350;
 }
 
+.isNot {
+  color: #333;
+  background-color: #fff;
+  border-color: #fff;
+}
+
 .isNot:hover {
   cursor: no-drop;
 }
 
-.l_input:focus {
+.l_input:focus,
+.n_input:focus {
   outline: none;
   border: 1px #eb7350 solid;
 }
 
-#bot_btn {
+.bot_btn {
+  margin: 0 auto;
   margin-top: 7%;
-  margin-left: 29%;
-  width: 34%;
-  height: 40px;
-  font-size: 16px;
-  font-weight: bold;
+  width: 28%;
+  height: 34px;
+  font-size: 14px;
   color: #fff;
-  background-color: #ffa00a;
-  border: 1px #fff solid;
-  outline: 1px #ffa00a solid;
+  background-color: #ff8140;
+  border: 1px #ff8140 solid;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  outline: none;
 }
 
-#bot_btn:hover {
+.t_btn {
+  margin: 0 auto;
+  margin-top: 7%;
+  width: 20%;
+  height: 34px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #ff8140;
+  border: 1px #ff8140 solid;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+.bot_btn:hover,
+.t_btn:hover {
   cursor: pointer;
-  background-color: #ffb941;
+  background-color: #eb7350;
+}
+
+#back {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  font-size: 22px;
+  color: #333;
 }
 </style>
 
 <style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+  transition-delay: 0.5s;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+
 .el-step__title {
   font-size: 14px;
 }
