@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3590935",
+      "name": "管理员",
+      "font_class": "my_message",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "4889788",
+      "name": "头像",
+      "font_class": "avatar",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
       "icon_id": "1115084",
       "name": "向上",
       "font_class": "back",

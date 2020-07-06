@@ -38,6 +38,8 @@
 
 
 <script>
+import store from "../../store/store";
+
 export default {
   name: "Login",
 
@@ -124,6 +126,7 @@ export default {
       };
 
       console.log(data);
+      console.log(store);
 
       // this.$axios({
       //   method: "",
@@ -131,12 +134,13 @@ export default {
       //   data: data
       // }).then(re => {
       //   console.log(re);
-      //   if (re.errno == 0) {
-      // if (this.remember) {
-      //   this.set_cookie(this.user, this.pswd, 7);
-      // } else {
-      //   this.delete_cookie;
-      // }
+      //   if (re.data.errno == 0) {
+      //     store.mutations.set_token(store.state, re.data.token);
+      //     if (this.remember) {
+      //       this.set_cookie(this.user, this.pswd, 7);
+      //     } else {
+      //       this.delete_cookie;
+      //     }
       //   }
       // });
     }

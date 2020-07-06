@@ -1,7 +1,9 @@
 <template>
   <div id="home" @scroll.passive="get_top($event)">
     <Header :class="{isTop: !isTop}"></Header>
-    <!-- <router-view></router-view> -->
+
+    <router-view></router-view>
+
     <el-backtop target="#home">
       <div id="back">
         <span class="iconfont icon-back"></span>
@@ -43,15 +45,15 @@ export default {
 <style>
 #home {
   /* display: flex;
-  justify-content: center;
-  align-items: center; */
+  flex-direction: column;
+  justify-content: space-between; */
   height: 100%;
   width: 100%;
   z-index: 10;
   overflow: auto;
-  background: url("../../assets/page.jpg") scroll;
+  /* background: url("../../assets/page.jpg") scroll;
   background-repeat: no-repeat;
-  background-color: #e0c99f;
+  background-color: #e0c99f; */
 }
 
 .isTop {

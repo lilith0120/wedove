@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store/store'
+// import store from '../store/store'
 
 Vue.use(VueRouter)
 
@@ -8,6 +8,7 @@ Vue.use(VueRouter)
 const home = () => import('../components/Home/Home')
 const register = () => import('../components/Register/Register')
 const forget = () => import('../components/Forget_pswd/Forget')
+const setting = () => import('../components/Setting_self/Setting')
 
 const router = new VueRouter({
     mode: 'history',
@@ -16,7 +17,14 @@ const router = new VueRouter({
         {
             path: '/',
             component: home,
-            name: 'home'
+            name: 'home',
+            children: [
+                {
+                    path: 'setting',
+                    component: setting,
+                    name: 'setting'
+                }
+            ]
         },
         {
             path: '/register',
@@ -31,19 +39,19 @@ const router = new VueRouter({
     ]
 })
 
-router.beforeEach((to, from, next) => {
-    if (store.state.token != ""
-        || to.path == '/'
-        || to.path == '/register'
-        || to.path == '/forget') {
-        next()
-    }
-    else {
-        next({
-            name: 'home'
-        });
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (store.state.token != ""
+//         || to.path == '/'
+//         || to.path == '/register'
+//         || to.path == '/forget') {
+//         next()
+//     }
+//     else {
+//         next({
+//             name: 'home'
+//         });
+//     }
+// });
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

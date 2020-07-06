@@ -97,7 +97,7 @@ export default {
   data() {
     return {
       search_key: "",
-      isLogin: false,
+      isLogin: true,
       isShow: false,
       username: "行露的吸血鬼",
       at_me: 12,
@@ -106,12 +106,14 @@ export default {
     };
   },
 
-  created() {
-    if (store.state.token != "") {
-      this.isLogin = true;
-      // 这里拿数据
-    }
-  },
+  // created() {
+  //   if (store.state.token != "") {
+  //     this.isLogin = true;
+  //     // 这里拿数据
+  //   } else {
+  //     this.isLogin = false;
+  //   }
+  // },
 
   methods: {
     go_home() {
@@ -128,15 +130,28 @@ export default {
     },
 
     go_setting() {
-      console.log(3);
+      this.$router.push({ name: "setting" });
     },
 
     logout() {
       store.mutations.remove_token(store.state);
+      this.$router.go(0);
     },
 
     search() {
-      console.log(this.search_key);
+      let data = {
+        key: this.search_key
+      };
+
+      console.log(data);
+
+      // this.$axios({
+      //   method: "",
+      //   url: "",
+      //   data: data
+      // }).then(re => {
+      //   console.log(re);
+      // });
     }
   }
 };
@@ -232,6 +247,7 @@ export default {
   display: flex;
   align-items: center;
   font-size: 22px;
+  color: #333;
 }
 
 .icon-home {
