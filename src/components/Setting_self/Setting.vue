@@ -43,6 +43,19 @@ export default {
     }
   },
 
+  watch: {
+    $route(to) {
+      let url = to.path.split("/");
+      if (url[url.length - 1] == "pswd") {
+        this.active = "3";
+      } else if (url[url.length - 1] == "avatar") {
+        this.active = "2";
+      } else {
+        this.active = "1";
+      }
+    }
+  },
+
   methods: {
     go_msg() {
       this.$router.push({ name: "change_msg" });

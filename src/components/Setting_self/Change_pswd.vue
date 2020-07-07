@@ -103,7 +103,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 100%;
 }
@@ -122,6 +122,7 @@ export default {
 #content {
   /* border: 1px red solid;
   box-sizing: border-box; */
+  margin-left: 18%;
   margin-bottom: 30%;
   width: 50%;
   height: 30%;
@@ -142,7 +143,7 @@ export default {
 
 .finished {
   margin-top: 18%;
-  margin-left: 25%;
+  margin-left: 33%;
   width: 50%;
   color: #fff;
   background-color: #ff8140;
