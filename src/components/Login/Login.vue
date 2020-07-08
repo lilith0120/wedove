@@ -141,6 +141,9 @@ export default {
       //     } else {
       //       this.delete_cookie;
       //     }
+      //   } else {
+      //     let msg = re.data.message;
+      //     this.$message.error(msg);
       //   }
       // });
     }

@@ -247,6 +247,17 @@ export default {
       //   data: data
       // }).then(re => {
       //   console.log(re);
+      //   if (re.data.errno != 0) {
+      //     let msg = re.data.message;
+      //     this.$message.error(msg);
+      //   } else {
+      //     this.$message({
+      //       message: "注册成功！",
+      //       type: "success"
+      //     });
+
+      //     this.$router.push("/");
+      //   }
       // });
     }
   }

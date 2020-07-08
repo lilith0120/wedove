@@ -10,7 +10,7 @@ const register = () => import('../components/Register/Register')
 const forget = () => import('../components/Forget_pswd/Forget')
 const setting = () => import('../components/Setting_self/Setting')
 const change_msg = () => import('../components/Setting_self/Change_msg')
-const change_avatar = () => import('../components/Setting_self/Change_avatar/Change_avatar')
+const change_avatar = () => import('../components/Setting_self/Change_avatar')
 const change_pswd = () => import('../components/Setting_self/Change_pswd')
 
 const router = new VueRouter({

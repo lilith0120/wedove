@@ -76,21 +76,21 @@ export default {
 
       console.log(data);
 
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //     data: data
-      //   }).then(re => {
-      //     if (re.data.errno != 0) {
-      //       let msg = re.data.message;
-      //       this.$message.error(msg);
-      //     } else {
-      //       this.$message({
-      //         message: "修改密码成功！",
-      //         type: "success"
-      //       });
-      //     }
-      //   });
+      // this.$axios({
+      //   method: "",
+      //   url: "",
+      //   data: data
+      // }).then(re => {
+      //   if (re.data.errno != 0) {
+      //     let msg = re.data.message;
+      //     this.$message.error(msg);
+      //   } else {
+      //     this.$message({
+      //       message: "修改密码成功！",
+      //       type: "success"
+      //     });
+      //   }
+      // });
     }
   }
 };
@@ -111,6 +111,7 @@ export default {
 #title {
   border-bottom: 2px #ea1429 solid;
   box-sizing: border-box;
+  margin: 0 auto;
   margin-top: 3%;
   color: #333;
   font-size: 14px;

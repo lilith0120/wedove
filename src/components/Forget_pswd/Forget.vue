@@ -145,7 +145,7 @@ export default {
         // }).then(re => {
         //   console.log(re);
         //   if (re.data.errno == 0) {
-        this.active++;
+        // this.active++;
         //   }
         // });
       } else if (this.active === 1) {
@@ -186,13 +186,13 @@ export default {
         // }).then(re => {
         //   console.log(re);
         //   if (re.data.errno == 0) {
-        this.active++;
-        setInterval(() => {
-          this.t--;
-          if (this.t == 0) {
-            this.$router.push("/");
-          }
-        }, 1000);
+        // this.active++;
+        // setInterval(() => {
+        //   this.t--;
+        //   if (this.t == 0) {
+        //     this.$router.push("/");
+        //   }
+        // }, 1000);
         //   }
         // });
       }
