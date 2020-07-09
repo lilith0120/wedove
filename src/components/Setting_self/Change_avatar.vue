@@ -23,6 +23,7 @@
           :autoCropWidth="option.autoCropWidth"
           :autoCropHeight="option.autoCropHeight"
           :autoCrop="option.autoCrop"
+          :info="option.info"
           @real-time="realTime"
         ></vueCropper>
       </div>
@@ -59,7 +60,8 @@ export default {
         centerBox: true,
         autoCropWidth: 200,
         autoCropHeight: 200,
-        autoCrop: true
+        autoCrop: true,
+        info: false
       }
     };
   },

@@ -308,7 +308,11 @@ export default {
 }
 
 .mark {
-  height: 36px;
+  display: flex;
+  align-items: center;
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  /* height: 40px; */
 }
 
 .dialog >>> .el-dialog {
