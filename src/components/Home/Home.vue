@@ -52,8 +52,8 @@ export default {
   z-index: 10;
   overflow: auto;
   /* background: url("../../assets/page.jpg") scroll;
-  background-repeat: no-repeat;
-  background-color: #e0c99f; */
+  background-repeat: no-repeat; */
+  background-color: #e0c99f;
 }
 
 .isTop {
@@ -62,23 +62,24 @@ export default {
 }
 
 .el-backtop {
-  margin-right: 10%;
+  margin-right: 13.2%;
   border-radius: 0;
   box-shadow: none;
-}
-
-#back {
+  width: 45px;
+  height: 45px;
   background-color: #696e78;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
   opacity: 0.83;
 }
 
-#back:hover {
+.el-backtop:hover {
+  background-color: #696e78;
   opacity: 1;
+}
+
+#back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .icon-back {

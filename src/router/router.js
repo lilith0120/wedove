@@ -6,8 +6,11 @@ Vue.use(VueRouter)
 
 // 引入组件
 const home = () => import('../components/Home/Home')
+const home_page = () => import('../components/Home/Home_page')
+
 const register = () => import('../components/Register/Register')
 const forget = () => import('../components/Forget_pswd/Forget')
+
 const setting = () => import('../components/Setting_self/Setting')
 const change_msg = () => import('../components/Setting_self/Change_msg')
 const change_avatar = () => import('../components/Setting_self/Change_avatar')
@@ -21,6 +24,7 @@ const router = new VueRouter({
             path: '/',
             component: home,
             name: 'home',
+            redirect: { name: 'home_page' },
             children: [
                 {
                     path: 'setting',
@@ -44,6 +48,11 @@ const router = new VueRouter({
                             name: 'change_pswd'
                         }
                     ]
+                },
+                {
+                    path: 'home',
+                    component: home_page,
+                    name: 'home_page'
                 }
             ]
         },

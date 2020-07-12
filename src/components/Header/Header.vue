@@ -97,7 +97,7 @@ export default {
   data() {
     return {
       search_key: "",
-      isLogin: true,
+      isLogin: false,
       isShow: false,
       username: "行露的吸血鬼",
       at_me: 12,
@@ -228,7 +228,7 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 18%;
+  margin-left: 21%;
   height: 100%;
   width: 400px;
 }
@@ -238,7 +238,7 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 24%;
+  margin-left: 26%;
   height: 100%;
   width: 200px;
 }
