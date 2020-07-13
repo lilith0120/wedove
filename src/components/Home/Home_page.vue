@@ -22,10 +22,36 @@
 
       <div id="m_content"></div>
 
-      <div id="message">
+      <div
+        id="message"
+        v-loading="!isLogin"
+        element-loading-text="请先登录"
+        element-loading-spinner="el-icon-warning"
+      >
         <img id="avatar" :src="avatar" />
+
         <div id="name">
-          <span>{{username}}</span>
+          <span @click="go_myhome">{{username}}</span>
+        </div>
+
+        <div id="m_msg">
+          <ul>
+            <li id="attention">
+              <span class="num" v-if="attention_num < 10000" @click="go_msg(1)">{{attention_num}}</span>
+              <span class="num" v-else @click="go_msg(1)">9999+</span>
+              <span class="tip">关注</span>
+            </li>
+            <li id="fan">
+              <span class="num" v-if="fan_num < 10000" @click="go_msg(2)">{{fan_num}}</span>
+              <span class="num" v-else @click="go_msg(2)">9999+</span>
+              <span class="tip">粉丝</span>
+            </li>
+            <li id="blog">
+              <span class="num" v-if="blog_num < 10000" @click="go_msg(3)">{{blog_num}}</span>
+              <span class="num" v-else @click="go_msg(3)">9999+</span>
+              <span class="tip">微博</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -38,10 +64,32 @@ export default {
 
   data() {
     return {
-      isLogin: false,
+      isLogin: true,
       avatar: require("../../assets/avatar.png"),
-      username: "行露的吸血鬼"
+      username: "行露的吸血鬼",
+      attention_num: 41,
+      fan_num: 21,
+      blog_num: 367
     };
+  },
+
+  // created() {
+  //   this.$axios({
+  //     method: "",
+  //     url: ""
+  //   }).then(re => {
+  //     console.log(re);
+  //   });
+  // },
+
+  methods: {
+    go_myhome() {
+      alert(233);
+    },
+
+    go_msg(type) {
+      alert(type);
+    }
   }
 };
 </script>
@@ -142,6 +190,49 @@ export default {
 #name span:hover {
   cursor: pointer;
   color: #eb7350;
+}
+
+#m_msg {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  margin-top: 4%;
+  height: 22%;
+}
+
+#m_msg ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+#attention,
+#fan,
+#blog {
+  display: inline-block;
+  width: 30%;
+}
+
+#attention,
+#fan {
+  border-right: 1px #d9d9d9 solid;
+  box-sizing: border-box;
+}
+
+.num {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.num:hover {
+  cursor: pointer;
+  color: #eb7350;
+}
+
+.tip {
+  display: block;
+  font-size: 12px;
+  color: #919191;
 }
 </style>
 

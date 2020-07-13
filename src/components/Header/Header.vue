@@ -97,7 +97,7 @@ export default {
   data() {
     return {
       search_key: "",
-      isLogin: false,
+      isLogin: true,
       isShow: false,
       username: "行露的吸血鬼",
       at_me: 12,
