@@ -1,7 +1,12 @@
 <template>
   <div id="home_page">
     <div id="content">
-      <div id="sidebar">
+      <div
+        id="sidebar"
+        v-loading="!isLogin"
+        element-loading-text="请先登录"
+        element-loading-spinner="el-icon-warning"
+      >
         <el-menu default-active="1">
           <el-menu-item index="1">
             <span slot="title">首页</span>
@@ -17,14 +22,27 @@
 
       <div id="m_content"></div>
 
-      <div id="message"></div>
+      <div id="message">
+        <img id="avatar" :src="avatar" />
+        <div id="name">
+          <span>{{username}}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Home_page"
+  name: "Home_page",
+
+  data() {
+    return {
+      isLogin: false,
+      avatar: require("../../assets/avatar.png"),
+      username: "行露的吸血鬼"
+    };
+  }
 };
 </script>
 
@@ -37,6 +55,8 @@ export default {
   background: url("../../assets/page.jpg") scroll;
   background-repeat: no-repeat;
   background-color: #e0c99f;
+  /* overflow-x: hidden; */
+  /* overflow-y: overlay; */
 }
 
 #content {
@@ -45,17 +65,17 @@ export default {
   display: flex;
   margin: 0 auto;
   height: 100%;
-  width: 65.5%;
+  width: 1110px;
   background-color: rgba(98, 77, 39, 0.25);
   /* opacity: 0.25; */
 }
 
 #sidebar {
-  border: 1px black solid;
-  box-sizing: border-box;
+  /* border: 1px black solid;
+  box-sizing: border-box; */
   position: fixed;
   top: 65px;
-  width: 9.8%;
+  width: 165px;
   height: 100%;
   z-index: 10;
 }
@@ -66,8 +86,11 @@ export default {
 }
 
 .el-menu-item {
+  display: flex;
+  align-items: center;
   color: #fff;
   font-weight: bold;
+  height: 40px;
 }
 
 .el-menu-item:focus,
@@ -81,16 +104,50 @@ export default {
   margin-top: 65px;
   margin-left: 15.1%;
   width: 60%;
-  height: 100%;
 }
 
 #message {
-  border: 1px red solid;
-  box-sizing: border-box;
+  /* border: 1px red solid;
+  box-sizing: border-box; */
   position: fixed;
   top: 65px;
-  right: 317px;
-  width: 15%;
-  height: 23%;
+  margin-left: 49.5%;
+  width: 255px;
+  height: 185px;
+  background: url("../../assets/background.jpg") no-repeat top / contain;
+  background-color: #fff;
+}
+
+#avatar {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: block;
+  margin: 0 auto;
+  margin-top: 12%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
+}
+
+#name {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  margin-top: 2%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+#name span:hover {
+  cursor: pointer;
+  color: #eb7350;
+}
+</style>
+
+<style>
+.el-loading-spinner i,
+.el-loading-spinner .el-loading-text {
+  color: #eb7350;
 }
 </style>
