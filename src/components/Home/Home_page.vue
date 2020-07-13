@@ -20,7 +20,13 @@
         </el-menu>
       </div>
 
-      <div id="m_content"></div>
+      <div id="m_content">
+        <div id="s_blog">
+          <Editor></Editor>
+        </div>
+
+        <div class="b_content" v-for="(blog, index) in blogs" :key="index"></div>
+      </div>
 
       <div
         id="message"
@@ -59,8 +65,14 @@
 </template>
 
 <script>
+import Editor from "../Editor/Editor";
+
 export default {
   name: "Home_page",
+
+  components: {
+    Editor
+  },
 
   data() {
     return {
@@ -69,7 +81,8 @@ export default {
       username: "行露的吸血鬼",
       attention_num: 41,
       fan_num: 21,
-      blog_num: 367
+      blog_num: 367,
+      blogs: []
     };
   },
 
@@ -147,11 +160,23 @@ export default {
 }
 
 #m_content {
-  border: 1px blue solid;
-  box-sizing: border-box;
+  /* border: 1px blue solid;
+  box-sizing: border-box; */
   margin-top: 65px;
   margin-left: 15.1%;
   width: 60%;
+}
+
+#s_blog {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  height: 185px;
+  background-color: #fff;
+}
+
+.b_content {
+  border: 1px yellowgreen solid;
+  box-sizing: border-box;
 }
 
 #message {
