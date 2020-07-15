@@ -53,7 +53,7 @@
           </el-dropdown-menu>
         </el-dropdown>
 
-        <span class="iconfont icon-edit" title="快捷发布微博" @click="go_home"></span>
+        <span class="iconfont icon-edit" :class="{ishome: ishome}" title="快捷发布微博" @click="go_edit"></span>
       </div>
     </template>
     <template v-else>
@@ -80,25 +80,42 @@
     >
       <Login></Login>
     </el-dialog>
+
+    <el-dialog
+      class="edit"
+      @closed="hide()"
+      :visible.sync="isEdit"
+      :close-on-click-modal="false"
+      v-if="isEdit"
+      destroy-on-close
+      append-to-body
+      center
+    >
+      <Editor></Editor>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import store from "../../store/store";
 import Login from "../Login/Login";
+import Editor from "../Editor/Editor";
 
 export default {
   name: "Header",
 
   components: {
-    Login
+    Login,
+    Editor
   },
 
   data() {
     return {
+      ishome: true,
       search_key: "",
       isLogin: true,
       isShow: false,
+      isEdit: false,
       username: "行露的吸血鬼",
       at_me: 12,
       commit: 233,
@@ -106,14 +123,31 @@ export default {
     };
   },
 
-  // created() {
-  //   if (store.state.token != "") {
-  //     this.isLogin = true;
-  //     // 这里拿数据
-  //   } else {
-  //     this.isLogin = false;
-  //   }
-  // },
+  created() {
+    // if (store.state.token != "") {
+    //   this.isLogin = true;
+    let url = window.location.pathname.split("/");
+    if (url[url.length - 1] == "home") {
+      this.ishome = true;
+    } else {
+      this.ishome = false;
+    }
+    //   // 这里拿数据
+    // } else {
+    //   this.isLogin = false;
+    // }
+  },
+
+  watch: {
+    $route(to) {
+      let url = to.path.split("/");
+      if (url[url.length - 1] == "home") {
+        this.ishome = true;
+      } else {
+        this.ishome = false;
+      }
+    }
+  },
 
   methods: {
     go_home() {
@@ -152,6 +186,12 @@ export default {
       // }).then(re => {
       //   console.log(re);
       // });
+    },
+
+    go_edit() {
+      if (!this.ishome) {
+        this.isEdit = true;
+      }
     }
   }
 };
@@ -274,6 +314,15 @@ export default {
   color: #fa7d3c;
 }
 
+.ishome {
+  color: #aaaaaa;
+}
+
+.ishome:hover {
+  cursor: no-drop;
+  color: #aaaaaa;
+}
+
 .el-divider--vertical {
   margin: 0 7%;
   height: 60%;
@@ -331,5 +380,18 @@ export default {
   font-weight: bold;
   border-bottom: 3px #f7691d solid;
   line-height: 45px;
+}
+
+.edit >>> .el-dialog {
+  margin-top: 10.5% !important;
+  border-top: 2px #fa7f40 solid;
+  box-sizing: border-box;
+  width: 600px;
+  height: 28.5%;
+}
+
+.edit >>> .el-dialog__header {
+  padding: 0;
+  z-index: 10;
 }
 </style>

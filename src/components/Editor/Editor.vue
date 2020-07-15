@@ -3,7 +3,7 @@
     <div id="tips">有什么新鲜事想告诉大家?</div>
     <div id="tool" class="toolbar"></div>
     <div id="editor" class="text"></div>
-    <el-button id="btn">发布</el-button>
+    <el-button id="btn" @click="send_blog">发布</el-button>
   </div>
 </template>
 
@@ -15,38 +15,76 @@ export default {
 
   data() {
     return {
-      blog: ""
+      blog: "",
+      emotions: []
     };
   },
 
   mounted() {
-    let editor = new Editor("#editor", "#tool");
-    editor.customConfig.menus = [
-      "emoticon", // 表情
-      "image", // 插入图片
-      "link" // 插入链接
-    ];
-    editor.customConfig.onchange = () => {
-      this.blog = editor.txt.html();
-      console.log(this.blog);
-    };
-
-    // 上传图片的api和文件名
-    editor.customConfig.uploadImgServer = "#";
-    editor.customConfig.uploadFileName = "file";
-    editor.customConfig.customAlert = info => {
-      this.$message.error(info);
-    };
-
-    editor.create();
+    this.editor_config();
   },
-  methods: {}
+
+  methods: {
+    editor_config() {
+      this.$axios({
+        method: "get",
+        url: "/emotion.json"
+      }).then(re => {
+        console.log(re);
+        this.emotions = re.data;
+        let editor = new Editor("#editor", "#tool");
+        editor.customConfig.menus = [
+          "emoticon", // 表情
+          "image", // 插入图片
+          "link" // 插入链接
+        ];
+        editor.customConfig.onchange = () => {
+          this.blog = editor.txt.html();
+          console.log(this.blog);
+        };
+
+        console.log(this.emotions);
+        if (this.emotions != undefined && this.emotions.length > 0) {
+          editor.customConfig.emotions = this.emotions;
+        }
+
+        // 上传图片的api和文件名
+        editor.customConfig.uploadImgServer = "#";
+        editor.customConfig.uploadFileName = "file";
+        editor.customConfig.customAlert = info => {
+          this.$message.error(info);
+        };
+        editor.create();
+      });
+    },
+
+    send_blog() {
+      if (this.blog == "" || this.blog == "<p><br></p>") {
+        this.$message({
+          message: "你什么都还没输入哦！",
+          type: "warning",
+          duration: 2000
+        });
+
+        return;
+      }
+
+      // this.$axios({
+      //   method: '',
+      //   url: '',
+      //   data: data
+      // }).then(re => {
+      //   console.log(re)
+      // })
+    }
+  }
 };
 </script>
 
 <style scoped>
 #m_editor {
-  overflow: hidden;
+  border: 1px #fff solid;
+  box-sizing: border-box;
 }
 
 #tips {
