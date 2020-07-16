@@ -114,6 +114,7 @@ export default {
 #m_editor {
   border: 1px #fff solid;
   box-sizing: border-box;
+  border-radius: 2px;
 }
 
 #tips {

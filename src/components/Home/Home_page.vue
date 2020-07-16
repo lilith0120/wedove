@@ -25,7 +25,19 @@
           <Editor></Editor>
         </div>
 
-        <div class="b_content" v-for="(blog, index) in blogs" :key="index"></div>
+        <div class="b_content" v-for="(blog, index) in blogs" :key="index">
+          <div class="b_top">
+            <img class="b_avatar" :src="blog.avatar" />
+            <div class="b_middle">
+              <div class="b_user" @click="go_userhome(blog.user)">{{blog.user}}</div>
+              <div class="b_time">{{blog.time}}</div>
+            </div>
+          </div>
+
+          <div class="b_m_content" v-html="blog.content"></div>
+
+          <div class="b_bottom"></div>
+        </div>
       </div>
 
       <div
@@ -82,7 +94,14 @@ export default {
       attention_num: 41,
       fan_num: 21,
       blog_num: 367,
-      blogs: []
+      blogs: [
+        {
+          avatar: require("../../assets/avatar.png"),
+          user: "大猫猫",
+          time: "2020-07-16 23:44",
+          content: "<p>要睡觉了！<br></p>"
+        }
+      ]
     };
   },
 
@@ -112,6 +131,10 @@ export default {
       } else {
         alert(33);
       }
+    },
+
+    go_userhome(user) {
+      alert(user);
     }
   }
 };
@@ -180,13 +203,18 @@ export default {
 #s_blog {
   /* border: 1px red solid;
   box-sizing: border-box; */
+  border-radius: 2px;
   height: 165px;
   background-color: #fff;
 }
 
 .b_content {
-  border: 1px yellowgreen solid;
+  border: 1px #fff solid;
   box-sizing: border-box;
+  border-radius: 2px;
+  margin-top: 1.5%;
+  min-height: 135px;
+  background-color: #fff;
 }
 
 #message {
@@ -268,6 +296,58 @@ export default {
   display: block;
   font-size: 12px;
   color: #919191;
+}
+
+.b_top {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 3%;
+  width: 94%;
+}
+
+.b_avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
+.b_middle {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 2%;
+}
+
+.b_user {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.b_user:hover {
+  cursor: pointer;
+  color: #eb7350;
+}
+
+.b_time {
+  margin-top: 7%;
+  font-size: 12px;
+  font-weight: initial;
+  color: #919191;
+}
+
+.b_m_content {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  margin-left: 13%;
+  width: 84%;
+  font-size: 14px;
+  color: #333;
 }
 </style>
 
