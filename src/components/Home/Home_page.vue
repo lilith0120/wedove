@@ -8,13 +8,13 @@
         element-loading-spinner="el-icon-warning"
       >
         <el-menu default-active="1">
-          <el-menu-item index="1">
+          <el-menu-item index="1" @click="go_page(1)">
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2" @click="go_page(2)">
             <span slot="title">我的收藏</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="3" @click="go_page(3)">
             <span slot="title">我的赞</span>
           </el-menu-item>
         </el-menu>
@@ -102,6 +102,16 @@ export default {
 
     go_msg(type) {
       alert(type);
+    },
+
+    go_page(type) {
+      if (type == 1) {
+        this.$router.push({ name: "home_page" });
+      } else if (type == 2) {
+        alert(22);
+      } else {
+        alert(33);
+      }
     }
   }
 };
@@ -126,7 +136,7 @@ export default {
   display: flex;
   margin: 0 auto;
   height: 100%;
-  width: 1110px;
+  width: 1000px;
   background-color: rgba(98, 77, 39, 0.25);
   /* opacity: 0.25; */
 }
@@ -136,7 +146,7 @@ export default {
   box-sizing: border-box; */
   position: fixed;
   top: 65px;
-  width: 165px;
+  width: 150px;
   height: 100%;
   z-index: 10;
 }
@@ -170,7 +180,7 @@ export default {
 #s_blog {
   /* border: 1px red solid;
   box-sizing: border-box; */
-  height: 185px;
+  height: 165px;
   background-color: #fff;
 }
 
@@ -185,8 +195,8 @@ export default {
   position: fixed;
   top: 65px;
   margin-left: 49.5%;
-  width: 255px;
-  height: 185px;
+  width: 230px;
+  height: 165px;
   background: url("../../assets/background.jpg") no-repeat top / contain;
   background-color: #fff;
 }
@@ -197,8 +207,8 @@ export default {
   display: block;
   margin: 0 auto;
   margin-top: 12%;
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50px;
 }
 
@@ -220,7 +230,7 @@ export default {
 #m_msg {
   /* border: 1px red solid;
   box-sizing: border-box; */
-  margin-top: 4%;
+  margin-top: 3%;
   height: 22%;
 }
 

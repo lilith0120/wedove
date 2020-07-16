@@ -268,7 +268,7 @@ export default {
   box-sizing: border-box; */
   display: flex;
   align-items: center;
-  margin-left: 21%;
+  margin-left: 18%;
   height: 100%;
   width: 400px;
 }

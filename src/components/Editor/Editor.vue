@@ -1,22 +1,30 @@
 <template>
   <div id="m_editor">
     <div id="tips">有什么新鲜事想告诉大家?</div>
-    <div id="tool" class="toolbar"></div>
-    <div id="editor" class="text"></div>
-    <el-button id="btn" @click="send_blog">发布</el-button>
+    <at :members="members">
+      <div id="tool" class="toolbar"></div>
+      <div id="editor" class="text"></div>
+      <el-button id="btn" @click="send_blog">发布</el-button>
+    </at>
   </div>
 </template>
 
 <script>
 import Editor from "wangeditor";
+import At from "vue-at";
 
 export default {
   name: "Editor",
 
+  components: {
+    At
+  },
+
   data() {
     return {
       blog: "",
-      emotions: []
+      emotions: [],
+      members: ["11", "22", "xl", "33", "44", "55", "qq", "ww"]
     };
   },
 
@@ -49,11 +57,32 @@ export default {
         }
 
         // 上传图片的api和文件名
+        editor.customConfig.showLinkImg = false;
         editor.customConfig.uploadImgServer = "#";
         editor.customConfig.uploadFileName = "file";
         editor.customConfig.customAlert = info => {
           this.$message.error(info);
         };
+        editor.customConfig.uploadImgHooks = {
+          before(xhr, editor, files) {
+            console.log(files);
+          },
+          // 图片上传并返回结果，图片插入成功之后触发
+          success(xhr, editor, result) {
+            console.log(xhr);
+            console.log(editor);
+            console.log(result);
+          },
+          // 图片上传并返回结果，但图片插入错误时触发
+          fail() {
+            this.$message.error("图片插入失败！");
+          },
+          // 图片上传出错时触发
+          error() {
+            this.$message.error("图片上传失败！");
+          }
+        };
+
         editor.create();
       });
     },
@@ -97,20 +126,21 @@ export default {
 .text {
   display: inline-flex;
   width: 50%;
-  margin-top: 1.4%;
+  margin-top: 0.7%;
 }
 
 .toolbar {
   margin-top: 1.5%;
   margin-left: 1.5%;
   width: 97%;
-  height: 89px;
+  height: 80px;
 }
 
 #btn {
   margin-left: 34.5%;
   font-size: 14px;
   width: 14%;
+  padding: 1.5% 0;
   color: #fff;
   background-color: #ff8140;
 }
@@ -130,5 +160,10 @@ export default {
 
 .w-e-text:focus {
   border-color: #eb7350;
+}
+
+.atwho-view {
+  position: relative;
+  left: 0;
 }
 </style>
