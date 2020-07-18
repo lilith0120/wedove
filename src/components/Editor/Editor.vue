@@ -56,6 +56,8 @@ export default {
           editor.customConfig.emotions = this.emotions;
         }
 
+        editor.customConfig.zIndex = 1;
+
         // 上传图片的api和文件名
         editor.customConfig.showLinkImg = false;
         editor.customConfig.uploadImgServer = "#";

@@ -4,7 +4,7 @@
 
     <router-view></router-view>
 
-    <el-backtop target="#home">
+    <el-backtop target="#home" visibility-height="1">
       <div id="back">
         <span class="iconfont icon-back"></span>
       </div>
