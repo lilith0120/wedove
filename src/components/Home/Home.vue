@@ -62,7 +62,7 @@ export default {
 }
 
 .el-backtop {
-  margin-right: 13.2%;
+  margin-right: 12.5%;
   border-radius: 0;
   box-shadow: none;
   width: 45px;

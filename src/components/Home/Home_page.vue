@@ -9,13 +9,13 @@
       >
         <el-menu default-active="1">
           <el-menu-item index="1" @click="go_page(1)">
-            <span slot="title">首页</span>
+            <span class="menu_item" slot="title">首页</span>
           </el-menu-item>
           <el-menu-item index="2" @click="go_page(2)">
-            <span slot="title">我的收藏</span>
+            <span class="menu_item" slot="title">我的收藏</span>
           </el-menu-item>
           <el-menu-item index="3" @click="go_page(3)">
-            <span slot="title">我的赞</span>
+            <span class="menu_item" slot="title">我的赞</span>
           </el-menu-item>
         </el-menu>
       </div>
@@ -36,7 +36,34 @@
 
           <div class="b_m_content" v-html="blog.content"></div>
 
-          <div class="b_bottom"></div>
+          <div class="b_bottom">
+            <ul>
+              <li class="b_tips" id="star" @click="get_up(blog.id, blog.star, 1)">
+                <i class="iconfont icon-star">
+                  <span class="b_tip" v-if="blog.star == 0">收藏</span>
+                  <span class="b_tip" v-else>{{blog.star}}</span>
+                </i>
+              </li>
+              <li class="b_tips" id="forward" @click="go_blog(blog.id, 1)">
+                <i class="iconfont icon-forward">
+                  <span class="b_tip" v-if="blog.forward == 0">转发</span>
+                  <span class="b_tip" v-else>{{blog.forward}}</span>
+                </i>
+              </li>
+              <li class="b_tips" id="commit" @click="go_blog(blog.id, 2)">
+                <i class="iconfont icon-commit">
+                  <span class="b_tip" v-if="blog.commit == 0">评论</span>
+                  <span class="b_tip" v-else>{{blog.commit}}</span>
+                </i>
+              </li>
+              <li class="b_tips" id="praised" @click="get_up(blog.id, blog.praised, 2)">
+                <i class="iconfont icon-praised">
+                  <span class="b_tip" v-if="blog.praised == 0">赞</span>
+                  <span class="b_tip" v-else>{{blog.praised}}</span>
+                </i>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -96,10 +123,37 @@ export default {
       blog_num: 367,
       blogs: [
         {
+          id: 1,
           avatar: require("../../assets/avatar.png"),
-          user: "大猫猫",
+          user: "天问",
           time: "2020-07-16 23:44",
-          content: "<p>要睡觉了！<br></p>"
+          content: "<p>要睡觉了！<br></p>",
+          star: 0,
+          forward: 0,
+          commit: 2,
+          praised: 3
+        },
+        {
+          id: 2,
+          avatar: require("../../assets/avatar.png"),
+          user: "九歌",
+          time: "2020-07-18 16:30",
+          content: "<p>好饿啊！</p><p>想吃好吃的！</p><p>呜呜呜！</p>",
+          star: 1,
+          forward: 2,
+          commit: 0,
+          praised: 0
+        },
+        {
+          id: 3,
+          avatar: require("../../assets/avatar.png"),
+          user: "九歌",
+          time: "2020-07-18 21:38",
+          content: `<p><img src="http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/d5/2018new_yueliang_org.png" alt="[月亮]" data-w-e="1">晚上早点睡觉！！！<br></p>`,
+          star: 0,
+          forward: 0,
+          commit: 0,
+          praised: 0
         }
       ]
     };
@@ -135,6 +189,40 @@ export default {
 
     go_userhome(user) {
       alert(user);
+    },
+
+    get_up(id, num, type) {
+      // 判断是否赞过
+      // this.$axios({
+      //   method: '',
+      //   url: '',
+      //   data: data
+      // }).then(re => {
+      //   console.log(re)
+      // })
+
+      this.blogs.filter(a => {
+        if (a.id == id && type == 1) {
+          a.star = num + 1;
+        } else if (a.id == id && type == 2) {
+          a.praised = num + 1;
+        }
+      });
+      num += 1;
+      console.log(num);
+
+      // 保存点赞记录
+      // this.$axios({
+      //   method: '',
+      //   url: '',
+      //   data: data
+      // }).then(re => {
+      //   console.log(re)
+      // })
+    },
+
+    go_blog(id, type) {
+      alert(type);
     }
   }
 };
@@ -158,7 +246,8 @@ export default {
   box-sizing: border-box; */
   display: flex;
   margin: 0 auto;
-  height: 100%;
+  padding-bottom: 1.5%;
+  height: auto;
   width: 1000px;
   background-color: rgba(98, 77, 39, 0.25);
   /* opacity: 0.25; */
@@ -190,6 +279,10 @@ export default {
 .el-menu-item:focus,
 .el-menu-item:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu_item {
+  line-height: 0;
 }
 
 #m_content {
@@ -348,6 +441,50 @@ export default {
   width: 84%;
   font-size: 14px;
   color: #333;
+}
+
+.b_bottom {
+  border-top: 1px #f2f2f5 solid;
+  box-sizing: border-box;
+  margin-top: 1.2%;
+  height: 37px;
+}
+
+.b_bottom ul {
+  list-style-type: none;
+  text-align: center;
+  color: #919191;
+}
+
+.b_tips {
+  /* border: 1px red solid;
+  box-sizing: border-box; */
+  display: inline-block;
+  margin: 1.5% 0;
+  width: 25%;
+}
+
+.b_tips:hover {
+  cursor: pointer;
+  color: #eb7350;
+}
+
+.b_tip {
+  /* border: 1px blue solid;
+  box-sizing: border-box; */
+  margin-left: 4%;
+  font-size: 12px;
+}
+
+.iconfont {
+  font-size: 15px;
+}
+
+#star,
+#forward,
+#commit {
+  border-right: 1px #d9d9d9 solid;
+  box-sizing: border-box;
 }
 </style>
 

@@ -48,7 +48,7 @@ export default {
         ];
         editor.customConfig.onchange = () => {
           this.blog = editor.txt.html();
-          console.log(this.blog);
+          console.log(this.blog); //
         };
 
         console.log(this.emotions);
