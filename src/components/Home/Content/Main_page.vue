@@ -8,7 +8,16 @@
       <div class="b_top">
         <img class="b_avatar" :src="blog.avatar" />
         <div class="b_middle">
-          <div class="b_user" @click="go_userhome(blog.user)">{{blog.user}}</div>
+          <el-popover placement="top" width="350" trigger="hover">
+            <user-card></user-card>
+            <div
+              class="b_user"
+              slot="reference"
+              @click="go_userhome(blog.user)"
+              @mouseenter="show_card(blog.user)"
+            >{{blog.user}}</div>
+          </el-popover>
+
           <div class="b_time">{{blog.time}}</div>
         </div>
       </div>
@@ -49,13 +58,15 @@
 
 <script>
 import Editor from "../../Editor/Editor";
+import userCard from "../Content/User_card";
 import store from "../../../store/store";
 
 export default {
   name: "Main_page",
 
   components: {
-    Editor
+    Editor,
+    userCard
   },
 
   data() {
@@ -155,6 +166,10 @@ export default {
 
     go_blog(id, type) {
       alert(type);
+    },
+
+    show_card(user) {
+      console.log(user);
     }
   }
 };
@@ -212,6 +227,7 @@ export default {
 }
 
 .b_user {
+  display: inline;
   font-size: 14px;
   font-weight: bold;
   color: #333;

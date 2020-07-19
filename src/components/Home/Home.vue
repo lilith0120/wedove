@@ -4,7 +4,7 @@
 
     <router-view></router-view>
 
-    <el-backtop target="#home" visibility-height="1">
+    <el-backtop target="#home" :visibility-height="1">
       <div id="back">
         <span class="iconfont icon-back"></span>
       </div>
@@ -50,7 +50,7 @@ export default {
   height: 100%;
   width: 100%;
   z-index: 10;
-  overflow: auto;
+  overflow-y: scroll;
   /* background: url("../../assets/page.jpg") scroll;
   background-repeat: no-repeat; */
   background-color: #e0c99f;

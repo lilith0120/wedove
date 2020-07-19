@@ -122,7 +122,7 @@ export default {
   background-repeat: no-repeat;
   background-color: #e0c99f;
   /* overflow-x: hidden; */
-  /* overflow-y: overlay; */
+  /* overflow-y: scroll; */
 }
 
 #content {
