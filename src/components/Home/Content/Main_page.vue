@@ -8,14 +8,15 @@
       <div class="b_top">
         <img class="b_avatar" :src="blog.avatar" />
         <div class="b_middle">
-          <el-popover placement="top" width="350" trigger="hover">
-            <user-card></user-card>
-            <div
-              class="b_user"
-              slot="reference"
-              @click="go_userhome(blog.user)"
-              @mouseenter="show_card(blog.user)"
-            >{{blog.user}}</div>
+          <el-popover
+            placement="top"
+            width="350"
+            trigger="hover"
+            @show="isShow.splice(index, 1, true)"
+            @hide="isShow.splice(index, 1, false)"
+          >
+            <user-card :isShow="isShow[index]" :user="blog.user"></user-card>
+            <div class="b_user" slot="reference" @click="go_userhome(blog.user)">{{blog.user}}</div>
           </el-popover>
 
           <div class="b_time">{{blog.time}}</div>
@@ -72,6 +73,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      isShow: [],
       blogs: [
         {
           id: 1,
@@ -166,10 +168,6 @@ export default {
 
     go_blog(id, type) {
       alert(type);
-    },
-
-    show_card(user) {
-      console.log(user);
     }
   }
 };
@@ -296,5 +294,11 @@ export default {
 #commit {
   border-right: 1px #d9d9d9 solid;
   box-sizing: border-box;
+}
+</style>
+
+<style>
+.el-popover {
+  padding: 0;
 }
 </style>
