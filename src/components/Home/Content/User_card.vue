@@ -23,6 +23,24 @@
         </li>
       </ul>
     </div>
+
+    <div id="btn">
+      <el-button
+        class="atten"
+        plain
+        size="small"
+        v-if="!isAttention"
+        @click="isAttention=!isAttention"
+      >关注</el-button>
+      <el-button
+        class="atten"
+        plain
+        size="small"
+        title="取消关注"
+        v-else
+        @click="isAttention=!isAttention"
+      >已关注</el-button>
+    </div>
   </div>
 </template>
 
@@ -35,7 +53,8 @@ export default {
       avatar: require("../../../assets/avatar.png"),
       attention_num: 0,
       fan_num: 0,
-      blog_num: 0
+      blog_num: 0,
+      isAttention: false,
     };
   },
 
@@ -44,6 +63,7 @@ export default {
   watch: {
     isShow(newValue) {
       if (newValue) {
+        // 查看资料，以及是否关注
         // this.$axios({
         //   method: '',
         //   url: '',
@@ -52,8 +72,8 @@ export default {
         //   console.log(re)
         // })
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -128,5 +148,16 @@ export default {
   margin-right: 5%;
   font-size: 12px;
   color: #333;
+}
+
+#btn {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 5%;
+}
+
+.atten:hover {
+  border-color: #eb7350;
+  color: #eb7350;
 }
 </style>

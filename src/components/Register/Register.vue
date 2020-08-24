@@ -21,6 +21,9 @@
               <span class="input_tips input_warn" v-show="name_warn">
                 <img class="input_img" src="../../assets/warn.png" />请输入正确格式的用户名
               </span>
+              <span class="input_tips input_warn" v-show="name_warn2">
+                <img class="input_img" src="../../assets/warn.png" />该用户名已被使用
+              </span>
             </div>
 
             <div class="input">
@@ -29,7 +32,7 @@
               </span>
               <input v-model="pswd" class="l_input" @focus="pswd_focus" @blur="pswd_blur" />
               <span class="input_tips" v-show="pswd_tip">
-                <img class="input_img" src="../../assets/info.png" />请输入6-16位字符
+                <img class="input_img" src="../../assets/info.png" />请输入6-16位字符,包含数字和字母
               </span>
               <span class="input_tips input_warn" v-show="pswd_warn">
                 <img class="input_img" src="../../assets/warn.png" />请输入正确格式的密码
@@ -46,6 +49,9 @@
               </span>
               <span class="input_tips input_warn" v-show="email_warn">
                 <img class="input_img" src="../../assets/warn.png" />请输入正确格式的邮箱
+              </span>
+              <span class="input_tips input_warn" v-show="email_warn2">
+                <img class="input_img" src="../../assets/warn.png" />该邮箱已被使用
               </span>
             </div>
 
@@ -127,12 +133,14 @@ export default {
       isSend: false,
       name_tip: false,
       name_warn: false,
+      name_warn2: false,
       pswd_tip: false,
       pswd_warn: false,
       email_tip: false,
       email_warn: false,
+      email_warn2: false,
       code_tip: false,
-      code_warn: false
+      code_warn: false,
     };
   },
 
@@ -140,13 +148,30 @@ export default {
     name_focus() {
       this.name_tip = true;
       this.name_warn = false;
+      this.name_warn2 = false;
     },
 
     name_blur() {
       this.name_tip = false;
       if (this.name == "" || this.name.length < 3 || this.name.length > 10) {
         this.name_warn = true;
+
+        return;
       }
+
+      let data = {
+        name: this.name,
+      };
+
+      this.$axios({
+        method: "",
+        url: "",
+        data: data,
+      }).then((re) => {
+        if (re.errno != 0) {
+          this.name_warn2 = true;
+        }
+      });
     },
 
     pswd_focus() {
@@ -156,7 +181,8 @@ export default {
 
     pswd_blur() {
       this.pswd_tip = false;
-      if (this.pswd == "" || this.pswd.length < 6 || this.pswd.length > 16) {
+      let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+      if (this.pswd == "" || !reg.test(this.pswd)) {
         this.pswd_warn = true;
       }
     },
@@ -164,6 +190,7 @@ export default {
     email_focus() {
       this.email_tip = true;
       this.email_warn = false;
+      this.email_warn2 = false;
     },
 
     email_blur() {
@@ -171,7 +198,23 @@ export default {
       let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
       if (this.email == "" || !reg.test(this.email)) {
         this.email_warn = true;
+
+        return;
       }
+
+      let data = {
+        email: this.email,
+      };
+
+      this.$axios({
+        method: "",
+        url: "",
+        data: data,
+      }).then((re) => {
+        if (re.errno != 0) {
+          this.email_warn2 = true;
+        }
+      });
     },
 
     code_focus() {
@@ -236,7 +279,7 @@ export default {
         username: this.name,
         password: this.pswd,
         email: this.email,
-        code: this.code
+        code: this.code,
       };
 
       console.log(data);
@@ -259,8 +302,8 @@ export default {
       //     this.$router.push("/");
       //   }
       // });
-    }
-  }
+    },
+  },
 };
 </script>
 

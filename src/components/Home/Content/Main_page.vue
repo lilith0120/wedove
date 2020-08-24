@@ -67,7 +67,7 @@ export default {
 
   components: {
     Editor,
-    userCard
+    userCard,
   },
 
   data() {
@@ -84,7 +84,7 @@ export default {
           star: 0,
           forward: 0,
           commit: 2,
-          praised: 3
+          praised: 3,
         },
         {
           id: 2,
@@ -95,7 +95,7 @@ export default {
           star: 1,
           forward: 2,
           commit: 0,
-          praised: 0
+          praised: 0,
         },
         {
           id: 3,
@@ -106,7 +106,7 @@ export default {
           star: 0,
           forward: 0,
           commit: 0,
-          praised: 0
+          praised: 0,
         },
         {
           id: 4,
@@ -117,9 +117,9 @@ export default {
           star: 0,
           forward: 0,
           commit: 2,
-          praised: 3
-        }
-      ]
+          praised: 3,
+        },
+      ],
     };
   },
 
@@ -137,7 +137,7 @@ export default {
     },
 
     get_up(id, num, type) {
-      // 判断是否赞过
+      // 判断是否赞过或收藏过
       // this.$axios({
       //   method: '',
       //   url: '',
@@ -146,7 +146,7 @@ export default {
       //   console.log(re)
       // })
 
-      this.blogs.filter(a => {
+      this.blogs.filter((a) => {
         if (a.id == id && type == 1) {
           a.star = num + 1;
         } else if (a.id == id && type == 2) {
@@ -156,7 +156,7 @@ export default {
       num += 1;
       console.log(num);
 
-      // 保存点赞记录
+      // 保存点赞(收藏)记录
       // this.$axios({
       //   method: '',
       //   url: '',
@@ -168,8 +168,8 @@ export default {
 
     go_blog(id, type) {
       alert(type);
-    }
-  }
+    },
+  },
 };
 </script>
 

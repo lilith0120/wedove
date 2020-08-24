@@ -106,7 +106,7 @@ export default {
 
   components: {
     Login,
-    Editor
+    Editor,
   },
 
   data() {
@@ -119,7 +119,7 @@ export default {
       username: "行露的吸血鬼",
       at_me: 12,
       commit: 233,
-      support: 77
+      support: 77,
     };
   },
 
@@ -127,7 +127,7 @@ export default {
     // if (store.state.token != "") {
     //   this.isLogin = true;
     let url = window.location.pathname.split("/");
-    if (url[url.length - 1] == "home") {
+    if (url[url.length - 2] == "home") {
       this.ishome = true;
     } else {
       this.ishome = false;
@@ -141,12 +141,12 @@ export default {
   watch: {
     $route(to) {
       let url = to.path.split("/");
-      if (url[url.length - 1] == "home") {
+      if (url[url.length - 2] == "home") {
         this.ishome = true;
       } else {
         this.ishome = false;
       }
-    }
+    },
   },
 
   methods: {
@@ -174,7 +174,7 @@ export default {
 
     search() {
       let data = {
-        key: this.search_key
+        key: this.search_key,
       };
 
       console.log(data);
@@ -192,8 +192,8 @@ export default {
       if (!this.ishome) {
         this.isEdit = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
