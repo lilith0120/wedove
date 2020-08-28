@@ -1,13 +1,13 @@
 module.exports = {
 
-    // devServer: {
-    //     proxy: {
-    //         '/api': {
-    //             target: '',
-    //             changeOrigin: true,
-    //         },
-    //     },
-    // },
+    devServer: {
+        proxy: {
+            '': {
+                target: 'https://39.101.199.3:443/',
+                changeOrigin: true,
+            },
+        },
+    },
 
     // publicPath: '/coLeader/',
 

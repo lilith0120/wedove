@@ -133,7 +133,7 @@ export default {
 
   methods: {
     go_userhome(user) {
-      alert(user);
+      this.$router.push(`/myhome/${user}`);
     },
 
     get_up(id, num, type) {

@@ -160,7 +160,7 @@ export default {
     },
 
     go_myhome() {
-      console.log(2);
+      this.$router.push(`/myhome/${this.username}`);
     },
 
     go_setting() {
@@ -169,6 +169,7 @@ export default {
 
     logout() {
       store.mutations.remove_token(store.state);
+      store.mutations.remove_username(store.state);
       this.$router.go(0);
     },
 

@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/icon/iconfont.css'
 import axios from 'axios'
 
-// axios.defaults.baseURL = 'http://yjcxlr.cn:3000/'
+axios.defaults.baseURL = 'https://39.101.199.3:443/'
 
 // 请求拦截 
 // axios.interceptors.request.use(

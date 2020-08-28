@@ -1,6 +1,7 @@
 const store = {
     state: {
         token: "",
+        username: "",
     },
 
     mutations: {
@@ -9,7 +10,15 @@ const store = {
         },
 
         remove_token(state) {
-            state.token = "";
+            state.token = ""
+        },
+
+        set_username(state, username) {
+            state.username = username
+        },
+
+        remove_username(state) {
+            state.username = ""
         }
     }
 }

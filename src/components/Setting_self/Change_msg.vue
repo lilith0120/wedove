@@ -83,7 +83,7 @@
           <div>
             <el-form label-position="right" label-width="70px">
               <el-form-item class="f_item" label="个性签名: ">
-                <el-input v-model="signature" placeholder="请输入个性签名"></el-input>
+                <el-input v-model="signature" placeholder="请输入个性签名" maxlength="10"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button class="btn" @click="save('signature')">保存</el-button>
@@ -110,19 +110,19 @@ export default {
       options: [
         {
           value: "保密",
-          label: "保密"
+          label: "保密",
         },
         {
           value: "男",
-          label: "男"
+          label: "男",
         },
         {
           value: "女",
-          label: "女"
-        }
+          label: "女",
+        },
       ],
       sex: "",
-      signature: ""
+      signature: "",
     };
   },
 
@@ -173,8 +173,8 @@ export default {
       //     });
       //   }
       // });
-    }
-  }
+    },
+  },
 };
 </script>
 

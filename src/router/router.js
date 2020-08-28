@@ -19,6 +19,12 @@ const change_msg = () => import('../components/Setting_self/Change_msg')
 const change_avatar = () => import('../components/Setting_self/Change_avatar')
 const change_pswd = () => import('../components/Setting_self/Change_pswd')
 
+const myhome = () => import('../components/Myhome/Myhome')
+const myhome_page = () => import('../components/Myhome/Myhome_page')
+const my_main_page = () => import('../components/Myhome/Content/Main_page')
+const attention_page = () => import('../components/Myhome/Content/Attention_page')
+const fan_page = () => import('../components/Myhome/Content/Fan_page')
+
 const router = new VueRouter({
     mode: 'history',
     base: '',
@@ -86,6 +92,37 @@ const router = new VueRouter({
             path: '/forget',
             component: forget,
             name: 'forget'
+        },
+        {
+            path: '/myhome/:user',
+            component: myhome,
+            name: 'myhome',
+            redirect: { name: 'myhome_page' },
+            children: [
+                {
+                    path: '',
+                    component: myhome_page,
+                    name: 'myhome_page',
+                    redirect: { name: 'my_main_page' },
+                    children: [
+                        {
+                            path: 'blogs',
+                            component: my_main_page,
+                            name: 'my_main_page'
+                        },
+                        {
+                            path: 'attention',
+                            component: attention_page,
+                            name: 'attention_page'
+                        },
+                        {
+                            path: 'fan',
+                            component: fan_page,
+                            name: 'fan_page'
+                        }
+                    ]
+                },
+            ]
         }
     ]
 })

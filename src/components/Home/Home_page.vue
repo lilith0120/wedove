@@ -71,7 +71,7 @@ export default {
       username: "行露的吸血鬼",
       attention_num: 41,
       fan_num: 21,
-      blog_num: 367
+      blog_num: 367,
     };
   },
 
@@ -92,11 +92,17 @@ export default {
 
   methods: {
     go_myhome() {
-      alert(233);
+      this.$router.push(`/myhome/${this.username}`);
     },
 
     go_msg(type) {
-      alert(type);
+      if (type == 3) {
+        this.$router.push(`/myhome/${this.username}`);
+      } else if (type == 1) {
+        this.$router.push(`/myhome/${this.username}/attention`);
+      } else {
+        this.$router.push(`/myhome/${this.username}/fan`);
+      }
     },
 
     go_page(type) {
@@ -107,8 +113,8 @@ export default {
       } else {
         this.$router.push({ name: "praised_page" });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

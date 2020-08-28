@@ -25,21 +25,8 @@
     </div>
 
     <div id="btn">
-      <el-button
-        class="atten"
-        plain
-        size="small"
-        v-if="!isAttention"
-        @click="isAttention=!isAttention"
-      >关注</el-button>
-      <el-button
-        class="atten"
-        plain
-        size="small"
-        title="取消关注"
-        v-else
-        @click="isAttention=!isAttention"
-      >已关注</el-button>
+      <el-button class="atten" plain size="small" v-if="!isAttention" @click="attention">关注</el-button>
+      <el-button class="atten" plain size="small" title="取消关注" v-else @click="attention">已关注</el-button>
     </div>
   </div>
 </template>
@@ -71,6 +58,43 @@ export default {
         // }).then(re => {
         //   console.log(re)
         // })
+      }
+    },
+  },
+
+  methods: {
+    attention(e) {
+      // 取消关注
+      // if (this.isAttention) {
+      //   this.$axios({
+      //     method: "",
+      //     url: "",
+      //   }).then((re) => {
+      this.isAttention = !this.isAttention;
+      //   });
+      // } else {
+      //   this.$axios({
+      //     method: "",
+      //     url: "",
+      //   }).then((re) => {
+      //     this.isAttention = !this.isAttention;
+      //   });
+      // }
+
+      let target = e.target;
+      if (target.nodeName == "SPAN") {
+        target = e.target.parentNode;
+      }
+      target.blur();
+    },
+
+    go_msg(type) {
+      if (type == 3) {
+        this.$router.push(`/myhome/${this.user}`);
+      } else if (type == 1) {
+        this.$router.push({ name: "attention_page" });
+      } else {
+        this.$router.push({ name: "fan_page" });
       }
     },
   },

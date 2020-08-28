@@ -17,14 +17,14 @@ export default {
   name: "Editor",
 
   components: {
-    At
+    At,
   },
 
   data() {
     return {
       blog: "",
       emotions: [],
-      members: ["11", "22", "xl", "33", "44", "55", "qq", "ww"]
+      members: ["11", "22", "xl", "33", "44", "55", "qq", "ww"],
     };
   },
 
@@ -36,15 +36,15 @@ export default {
     editor_config() {
       this.$axios({
         method: "get",
-        url: "/emotion.json"
-      }).then(re => {
+        url: "http://localhost:8080/emotion.json",
+      }).then((re) => {
         console.log(re);
         this.emotions = re.data;
         let editor = new Editor("#editor", "#tool");
         editor.customConfig.menus = [
           "emoticon", // 表情
           "image", // 插入图片
-          "link" // 插入链接
+          "link", // 插入链接
         ];
         editor.customConfig.onchange = () => {
           this.blog = editor.txt.html();
@@ -62,7 +62,7 @@ export default {
         editor.customConfig.showLinkImg = false;
         editor.customConfig.uploadImgServer = "#";
         editor.customConfig.uploadFileName = "file";
-        editor.customConfig.customAlert = info => {
+        editor.customConfig.customAlert = (info) => {
           this.$message.error(info);
         };
         editor.customConfig.uploadImgHooks = {
@@ -82,7 +82,7 @@ export default {
           // 图片上传出错时触发
           error() {
             this.$message.error("图片上传失败！");
-          }
+          },
         };
 
         editor.create();
@@ -94,7 +94,7 @@ export default {
         this.$message({
           message: "你什么都还没输入哦！",
           type: "warning",
-          duration: 2000
+          duration: 2000,
         });
 
         return;
@@ -107,8 +107,8 @@ export default {
       // }).then(re => {
       //   console.log(re)
       // })
-    }
-  }
+    },
+  },
 };
 </script>
 

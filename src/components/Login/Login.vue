@@ -50,7 +50,7 @@ export default {
       name: "",
       email: "",
       pswd: "",
-      remember: false
+      remember: false,
     };
   },
 
@@ -94,7 +94,7 @@ export default {
           message: "请输入用户名/邮箱！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
@@ -106,7 +106,7 @@ export default {
           message: "请输入密码！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
@@ -122,7 +122,7 @@ export default {
       let data = {
         name: this.name,
         email: this.email,
-        pswd: this.pswd
+        pswd: this.pswd,
       };
 
       console.log(data);
@@ -131,11 +131,12 @@ export default {
       // this.$axios({
       //   method: "",
       //   url: "",
-      //   data: data
-      // }).then(re => {
+      //   data: data,
+      // }).then((re) => {
       //   console.log(re);
       //   if (re.data.errno == 0) {
       //     store.mutations.set_token(store.state, re.data.token);
+      //     store.mutations.set_username(store.state, re.data.username);
       //     if (this.remember) {
       //       this.set_cookie(this.user, this.pswd, 7);
       //     } else {
@@ -146,8 +147,8 @@ export default {
       //     this.$message.error(msg);
       //   }
       // });
-    }
-  }
+    },
+  },
 };
 </script>
 
