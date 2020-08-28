@@ -92,9 +92,9 @@ export default {
       if (type == 3) {
         this.$router.push(`/myhome/${this.user}`);
       } else if (type == 1) {
-        this.$router.push({ name: "attention_page" });
+        this.$router.push(`/myhome/${this.user}/attention`);
       } else {
-        this.$router.push({ name: "fan_page" });
+        this.$router.push(`/myhome/${this.user}/fan`);
       }
     },
   },

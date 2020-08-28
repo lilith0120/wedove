@@ -44,18 +44,18 @@
                   <span
                     class="b_num"
                     v-if="blog.attention_num < 10000"
-                    @click="go_msg(1)"
+                    @click="go_msg(1, blog.user)"
                   >{{blog.attention_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(1)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(1, blog.user)">9999+</span>
                 </li>
                 <li id="fan">
                   <span class="tip">粉丝</span>
                   <span
                     class="b_num"
                     v-if="blog.fan_num < 10000"
-                    @click="go_msg(2)"
+                    @click="go_msg(2, blog.user)"
                   >{{blog.fan_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(2)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(2, blog.user)">9999+</span>
                 </li>
                 <li id="blog">
                   <span class="tip">微博</span>
@@ -64,7 +64,7 @@
                     v-if="blog.blog_num < 10000"
                     @click="go_msg(3, blog.user)"
                   >{{blog.blog_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(3)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(3, blog.user)">9999+</span>
                 </li>
               </ul>
             </div>
@@ -128,9 +128,9 @@ export default {
       if (type == 3) {
         this.$router.push(`/myhome/${user}`);
       } else if (type == 1) {
-        this.$router.push({ name: "attention_page" });
+        this.$router.push(`/myhome/${user}/attention`);
       } else {
-        this.$router.push({ name: "fan_page" });
+        this.$router.push(`/myhome/${user}/fan`);
       }
     },
   },
@@ -246,7 +246,7 @@ export default {
 #fan,
 #blog {
   display: inline-block;
-  width: 20%;
+  width: 30%;
 }
 
 #attention,
