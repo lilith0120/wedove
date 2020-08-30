@@ -46,7 +46,7 @@ export default {
   name: "Change_avatar",
 
   components: {
-    VueCropper
+    VueCropper,
   },
 
   data() {
@@ -61,8 +61,8 @@ export default {
         autoCropWidth: 200,
         autoCropHeight: 200,
         autoCrop: true,
-        info: false
-      }
+        info: false,
+      },
     };
   },
 
@@ -75,7 +75,7 @@ export default {
         height: previews.h + "px",
         overflow: "hidden",
         margin: "0",
-        borderRaidus: "50%"
+        borderRaidus: "50%",
       };
 
       this.previews = data;
@@ -93,36 +93,36 @@ export default {
           message: "请先选择图片 ！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
       }
 
-      this.$refs.cropper.getCropBlob(data => {
+      this.$refs.cropper.getCropBlob((data) => {
         // let img = window.URL.createObjectURL(data);
         let form_data = new FormData();
-        form_data.append("file", data);
+        form_data.append("avatar", data);
 
-        // this.$axios({
-        //   method: "",
-        //   url: "",
-        //   data: form_data,
-        //   headers: { "Content-Type": "multipart/form-data" }
-        // }).then(re => {
-        //   if (re.data.errno != 0) {
-        //     let msg = re.data.message;
-        //     this.$message.error(msg);
-        //   } else {
-        //     this.$message({
-        //       message: "修改头像成功！",
-        //       type: "success"
-        //     });
-        //   }
-        // });
+        this.$axios({
+          method: "put",
+          url: "/accountT/avatar",
+          data: form_data,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((re) => {
+          if (re.data.code != "200") {
+            let msg = re.data.msg;
+            this.$message.error(msg);
+          } else {
+            this.$message({
+              message: "修改头像成功！",
+              type: "success",
+            });
+          }
+        });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

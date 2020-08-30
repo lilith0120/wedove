@@ -24,7 +24,7 @@ export default {
     return {
       blog: "",
       emotions: [],
-      members: ["11", "22", "xl", "33", "44", "55", "qq", "ww"],
+      members: [],
     };
   },
 
@@ -100,13 +100,23 @@ export default {
         return;
       }
 
-      // this.$axios({
-      //   method: '',
-      //   url: '',
-      //   data: data
-      // }).then(re => {
-      //   console.log(re)
-      // })
+      let data = {
+        content: this.blog,
+      };
+
+      this.$axios({
+        method: "post",
+        url: "/blog",
+        data: data,
+      }).then((re) => {
+        console.log(re);
+        if (re.data.code == "200") {
+          this.$message({
+            message: "发布成功！",
+            type: "success",
+          });
+        }
+      });
     },
   },
 };

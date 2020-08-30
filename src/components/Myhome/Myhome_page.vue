@@ -34,7 +34,7 @@ export default {
       isAttention: false,
       avatar: require("../../assets/avatar.png"),
       username: "",
-      signature: "该吃吃，该睡睡，爱咋咋。",
+      signature: "",
     };
   },
 
@@ -46,18 +46,18 @@ export default {
       this.isMe = true;
     }
 
-    // if (store.state.token != "") {
-    //   this.isLogin = true;
-    // } else {
-    //   this.isLogin = false;
-    // }
+    if (store.state.token != "") {
+      this.isLogin = true;
 
-    // this.$axios({
-    //   method: "",
-    //   url: "",
-    // }).then((re) => {
-    //   console.log(re);
-    // });
+      this.$axios({
+        method: "",
+        url: "",
+      }).then((re) => {
+        console.log(re);
+      });
+    } else {
+      this.isLogin = false;
+    }
   },
 
   watch: {

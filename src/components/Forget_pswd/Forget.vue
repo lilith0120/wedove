@@ -75,7 +75,7 @@ export default {
       time: 60,
       t: 5,
       isSend: false,
-      active: 0
+      active: 0,
     };
   },
 
@@ -113,7 +113,7 @@ export default {
             message: "请输入正确的邮箱号！",
             type: "warning",
             showClose: false,
-            duration: 2000
+            duration: 2000,
           });
 
           return;
@@ -125,7 +125,7 @@ export default {
             message: "请输入验证码！",
             type: "warning",
             showClose: false,
-            duration: 2000
+            duration: 2000,
           });
 
           return;
@@ -133,21 +133,21 @@ export default {
 
         let data = {
           email: this.email,
-          code: this.code
+          verifyInput: this.code,
         };
 
         console.log(data);
 
-        // this.$axios({
-        //   method: "",
-        //   url: "",
-        //   data: data
-        // }).then(re => {
-        //   console.log(re);
-        //   if (re.data.errno == 0) {
-        // this.active++;
-        //   }
-        // });
+        this.$axios({
+          method: "get",
+          url: "/account/find/emaliVerification",
+          params: data,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") {
+            this.active++;
+          }
+        });
       } else if (this.active === 1) {
         if (this.pswd == "") {
           this.$notify({
@@ -155,7 +155,7 @@ export default {
             message: "请输入密码！",
             type: "warning",
             showClose: false,
-            duration: 2000
+            duration: 2000,
           });
 
           return;
@@ -167,37 +167,39 @@ export default {
             message: "两次密码请保持一致！",
             type: "warning",
             showClose: false,
-            duration: 2000
+            duration: 2000,
           });
 
           return;
         }
 
         let data = {
-          pswd: this.pswd
+          newPassword1: this.pswd,
+          newPassword2: this.r_pswd,
+          email: this.email,
         };
 
         console.log(data);
 
-        // this.$axios({
-        //   method: "",
-        //   url: "",
-        //   data: data
-        // }).then(re => {
-        //   console.log(re);
-        //   if (re.data.errno == 0) {
-        // this.active++;
-        // setInterval(() => {
-        //   this.t--;
-        //   if (this.t == 0) {
-        //     this.$router.push("/");
-        //   }
-        // }, 1000);
-        //   }
-        // });
+        this.$axios({
+          method: "get",
+          url: "/account/find/password",
+          params: data,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") {
+            this.active++;
+            setInterval(() => {
+              this.t--;
+              if (this.t == 0) {
+                this.$router.push("/");
+              }
+            }, 1000);
+          }
+        });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

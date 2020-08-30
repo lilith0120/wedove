@@ -126,53 +126,53 @@ export default {
     };
   },
 
-  // created() {
-  //   this.$axios({
-  //     method: "",
-  //     url: ""
-  //   }).then(re => {
-  //     if (re.data.errno != 0) {
-  //       this.username = re.data.username;
-  //       this.email = re.data.email;
-  //       this.phone = re.data.phone;
-  //       this.nickname = re.data.nickname;
-  //       this.sex = re.data.sex;
-  //       this.signature = re.data.signature;
-  //     }
-  //   });
-  // },
+  created() {
+    this.$axios({
+      method: "get",
+      url: "/accountT",
+    }).then((re) => {
+      if (re.data.code == "200") {
+        this.username = re.data.data.name;
+        this.email = re.data.data.mailbox;
+        this.phone = re.data.data.mobilePhone;
+        this.nickname = re.data.data.nickname;
+        this.sex = re.data.data.sex;
+        this.signature = re.data.data.individualitySignature;
+      }
+    });
+  },
 
   methods: {
     save(type) {
       let data = {};
 
       if (type == "phone") {
-        data["phone"] = this.phone;
+        data["mobilePhone"] = this.phone;
       } else if (type == "nickname") {
         data["nickname"] = this.nickname;
       } else if (type == "sex") {
         data["sex"] = this.sex;
       } else {
-        data["signature"] = this.signature;
+        data["individualitySignature"] = this.signature;
       }
 
       console.log(data);
 
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      //   data: data
-      // }).then(re => {
-      //   if (re.data.errno != 0) {
-      //     let msg = re.data.message;
-      //     this.$message.error(msg);
-      //   } else {
-      //     this.$message({
-      //       message: "修改成功！",
-      //       type: "success"
-      //     });
-      //   }
-      // });
+      this.$axios({
+        method: "put",
+        url: "/accountT",
+        data: data,
+      }).then((re) => {
+        if (re.data.code != "200") {
+          let msg = re.data.msg;
+          this.$message.error(msg);
+        } else {
+          this.$message({
+            message: "修改成功！",
+            type: "success",
+          });
+        }
+      });
     },
   },
 };

@@ -27,7 +27,7 @@ export default {
     return {
       o_pswd: "",
       n_pswd: "",
-      r_pswd: ""
+      r_pswd: "",
     };
   },
 
@@ -39,7 +39,7 @@ export default {
           message: "请输入原密码！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
@@ -51,7 +51,7 @@ export default {
           message: "请输入新密码！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
@@ -63,36 +63,37 @@ export default {
           message: "请保持两次密码一致！",
           type: "warning",
           showClose: false,
-          duration: 2000
+          duration: 2000,
         });
 
         return;
       }
 
       let data = {
-        o_pswd: this.o_pswd,
-        n_pswd: this.n_pswd
+        password: this.o_pswd,
+        newPassword1: this.n_pswd,
+        newPassword2: this.r_pswd,
       };
 
       console.log(data);
 
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      //   data: data
-      // }).then(re => {
-      //   if (re.data.errno != 0) {
-      //     let msg = re.data.message;
-      //     this.$message.error(msg);
-      //   } else {
-      //     this.$message({
-      //       message: "修改密码成功！",
-      //       type: "success"
-      //     });
-      //   }
-      // });
-    }
-  }
+      this.$axios({
+        method: "get",
+        url: "/accountT/password",
+        params: data,
+      }).then((re) => {
+        if (re.data.code != "200") {
+          let msg = re.data.msg;
+          this.$message.error(msg);
+        } else {
+          this.$message({
+            message: "修改密码成功！",
+            type: "success",
+          });
+        }
+      });
+    },
+  },
 };
 </script>
 

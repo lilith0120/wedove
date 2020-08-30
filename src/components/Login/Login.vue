@@ -120,33 +120,33 @@ export default {
       }
 
       let data = {
-        name: this.name,
-        email: this.email,
-        pswd: this.pswd,
+        username: this.user,
+        password: this.pswd,
+        rememberMe: this.remember,
       };
 
       console.log(data);
       console.log(store);
 
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      //   data: data,
-      // }).then((re) => {
-      //   console.log(re);
-      //   if (re.data.errno == 0) {
-      //     store.mutations.set_token(store.state, re.data.token);
-      //     store.mutations.set_username(store.state, re.data.username);
-      //     if (this.remember) {
-      //       this.set_cookie(this.user, this.pswd, 7);
-      //     } else {
-      //       this.delete_cookie;
-      //     }
-      //   } else {
-      //     let msg = re.data.message;
-      //     this.$message.error(msg);
-      //   }
-      // });
+      this.$axios({
+        method: "get",
+        url: "/account/login",
+        params: data,
+      }).then((re) => {
+        //console.log(re);
+        if (re.data.code == "200") {
+          store.mutations.set_token(store.state, re.data.token);
+          store.mutations.set_username(store.state, re.data.username);
+          if (this.remember) {
+            this.set_cookie(this.user, this.pswd, 7);
+          } else {
+            this.delete_cookie;
+          }
+        } else {
+          let msg = re.data.message;
+          this.$message.error(msg);
+        }
+      });
     },
   },
 };

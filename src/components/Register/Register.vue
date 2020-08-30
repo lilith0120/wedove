@@ -30,9 +30,15 @@
               <span class="r_label">
                 <span class="req">*</span>设置密码:
               </span>
-              <input v-model="pswd" class="l_input" @focus="pswd_focus" @blur="pswd_blur" />
+              <input
+                v-model="pswd"
+                type="password"
+                class="l_input"
+                @focus="pswd_focus"
+                @blur="pswd_blur"
+              />
               <span class="input_tips" v-show="pswd_tip">
-                <img class="input_img" src="../../assets/info.png" />请输入6-16位字符,包含数字和字母
+                <img class="input_img" src="../../assets/info.png" />请输入6-16位字符,含数字和字母
               </span>
               <span class="input_tips input_warn" v-show="pswd_warn">
                 <img class="input_img" src="../../assets/warn.png" />请输入正确格式的密码
@@ -160,15 +166,16 @@ export default {
       }
 
       let data = {
-        name: this.name,
+        username: this.name,
       };
 
       this.$axios({
-        method: "",
-        url: "",
-        data: data,
+        method: "get",
+        url: "/account/register/validateUsername",
+        params: data,
       }).then((re) => {
-        if (re.errno != 0) {
+        console.log(re);
+        if (re.status != 200) {
           this.name_warn2 = true;
         }
       });
@@ -191,6 +198,7 @@ export default {
       this.email_tip = true;
       this.email_warn = false;
       this.email_warn2 = false;
+      this.isSend = false;
     },
 
     email_blur() {
@@ -203,16 +211,17 @@ export default {
       }
 
       let data = {
-        email: this.email,
+        mailBox: this.email,
       };
 
       this.$axios({
-        method: "",
-        url: "",
-        data: data,
+        method: "get",
+        url: "/account/register/validateEMail",
+        params: data,
       }).then((re) => {
-        if (re.errno != 0) {
+        if (re.status != 200) {
           this.email_warn2 = true;
+          this.isSend = true;
         }
       });
     },
@@ -230,14 +239,21 @@ export default {
     },
 
     get_code() {
-      alert("send");
-      this.isSend = true;
-      // this.$axios({
-      //   method: "",
-      //   url: ""
-      // }).then(re => {
-      //   console.log(re);
-      // });
+      console.log("send");
+      this.$axios({
+        method: "get",
+        url: "/account/send/emaliVerification",
+        params: {
+          mailBox: this.email,
+        },
+      }).then((re) => {
+        console.log(re);
+        if (re.data.code == "200") {
+          this.isSend = true;
+        } else {
+          this.$message.error("发送验证码失败！");
+        }
+      });
 
       let clock = setInterval(() => {
         this.time--;
@@ -278,30 +294,29 @@ export default {
       let data = {
         username: this.name,
         password: this.pswd,
-        email: this.email,
-        code: this.code,
+        mail: this.email,
+        verifyInput: this.code,
       };
 
       console.log(data);
 
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      //   data: data
-      // }).then(re => {
-      //   console.log(re);
-      //   if (re.data.errno != 0) {
-      //     let msg = re.data.message;
-      //     this.$message.error(msg);
-      //   } else {
-      //     this.$message({
-      //       message: "注册成功！",
-      //       type: "success"
-      //     });
+      this.$axios({
+        method: "post",
+        url: "/account/register",
+        data: data,
+      }).then((re) => {
+        console.log(re);
+        if (re.data.code != "200") {
+          this.$message.error("注册失败！");
+        } else {
+          this.$message({
+            message: "注册成功！",
+            type: "success",
+          });
 
-      //     this.$router.push("/");
-      //   }
-      // });
+          this.$router.push("/");
+        }
+      });
     },
   },
 };

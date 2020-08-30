@@ -19,7 +19,7 @@
             <div class="b_user" slot="reference" @click="go_userhome(blog.user)">{{blog.user}}</div>
           </el-popover>
 
-          <div class="b_time">{{blog.time}}</div>
+          <div class="b_time">{{blog.releaseTime}}</div>
         </div>
       </div>
 
@@ -27,28 +27,28 @@
 
       <div class="b_bottom">
         <ul>
-          <li class="b_tips" id="star" @click="get_up(blog.id, blog.star, 1)">
+          <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.star, 1)" disabled>
             <i class="iconfont icon-star">
               <span class="b_tip" v-if="blog.star == 0">收藏</span>
               <span class="b_tip" v-else>{{blog.star}}</span>
             </i>
           </li>
-          <li class="b_tips" id="forward" @click="go_blog(blog.id, 1)">
+          <li class="b_tips" id="forward" @click="go_blog(blog.blogID, 1)">
             <i class="iconfont icon-forward">
-              <span class="b_tip" v-if="blog.forward == 0">转发</span>
-              <span class="b_tip" v-else>{{blog.forward}}</span>
+              <span class="b_tip" v-if="blog.repostNumber == 0">转发</span>
+              <span class="b_tip" v-else>{{blog.repostNumber}}</span>
             </i>
           </li>
-          <li class="b_tips" id="commit" @click="go_blog(blog.id, 2)">
+          <li class="b_tips" id="commit" @click="go_blog(blog.blogID, 2)">
             <i class="iconfont icon-commit">
-              <span class="b_tip" v-if="blog.commit == 0">评论</span>
-              <span class="b_tip" v-else>{{blog.commit}}</span>
+              <span class="b_tip" v-if="blog.commentNumber == 0">评论</span>
+              <span class="b_tip" v-else>{{blog.commentNumber}}</span>
             </i>
           </li>
-          <li class="b_tips" id="praised" @click="get_up(blog.id, blog.praised, 2)">
+          <li class="b_tips" id="praised" @click="get_up(blog.blogID, blog.likeNumber, 2)">
             <i class="iconfont icon-praised">
-              <span class="b_tip" v-if="blog.praised == 0">赞</span>
-              <span class="b_tip" v-else>{{blog.praised}}</span>
+              <span class="b_tip" v-if="blog.likeNumber == 0">赞</span>
+              <span class="b_tip" v-else>{{blog.likeNumber}}</span>
             </i>
           </li>
         </ul>
@@ -73,50 +73,50 @@ export default {
       isLogin: false,
       isShow: [],
       blogs: [
-        {
-          id: 1,
-          avatar: require("../../../assets/avatar.png"),
-          user: "天问",
-          time: "2020-07-16 23:44",
-          content: "<p>要睡觉了！<br></p>",
-          star: 0,
-          forward: 0,
-          commit: 2,
-          praised: 3,
-        },
-        {
-          id: 2,
-          avatar: require("../../../assets/avatar.png"),
-          user: "九歌",
-          time: "2020-07-18 16:30",
-          content: "<p>好饿啊！</p><p>想吃好吃的！</p><p>呜呜呜！</p>",
-          star: 1,
-          forward: 2,
-          commit: 0,
-          praised: 0,
-        },
-        {
-          id: 3,
-          avatar: require("../../../assets/avatar.png"),
-          user: "九歌",
-          time: "2020-07-18 21:38",
-          content: `<p><img src="http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/d5/2018new_yueliang_org.png" alt="[月亮]" data-w-e="1">晚上早点睡觉！！！<br></p>`,
-          star: 0,
-          forward: 0,
-          commit: 0,
-          praised: 0,
-        },
-        {
-          id: 4,
-          avatar: require("../../../assets/avatar.png"),
-          user: "天问",
-          time: "2020-07-18 22:35",
-          content: "<p>想吃好吃的！！！</p>",
-          star: 0,
-          forward: 0,
-          commit: 2,
-          praised: 3,
-        },
+        // {
+        //   id: 1,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "天问",
+        //   time: "2020-07-16 23:44",
+        //   content: "<p>要睡觉了！<br></p>",
+        //   star: 0,
+        //   forward: 0,
+        //   commit: 2,
+        //   praised: 3,
+        // },
+        // {
+        //   id: 2,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "九歌",
+        //   time: "2020-07-18 16:30",
+        //   content: "<p>好饿啊！</p><p>想吃好吃的！</p><p>呜呜呜！</p>",
+        //   star: 1,
+        //   forward: 2,
+        //   commit: 0,
+        //   praised: 0,
+        // },
+        // {
+        //   id: 3,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "九歌",
+        //   time: "2020-07-18 21:38",
+        //   content: `<p><img src="http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/d5/2018new_yueliang_org.png" alt="[月亮]" data-w-e="1">晚上早点睡觉！！！<br></p>`,
+        //   star: 0,
+        //   forward: 0,
+        //   commit: 0,
+        //   praised: 0,
+        // },
+        // {
+        //   id: 4,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "天问",
+        //   time: "2020-07-18 22:35",
+        //   content: "<p>想吃好吃的！！！</p>",
+        //   star: 0,
+        //   forward: 0,
+        //   commit: 2,
+        //   praised: 3,
+        // },
       ],
     };
   },
@@ -125,10 +125,19 @@ export default {
     if (store.state.token != "") {
       this.isLogin = true;
       this.$axios({
-        method: "",
-        url: "",
+        method: "get",
+        url: "/blog/all",
       }).then((re) => {
         console.log(re);
+        if (re.data.code == "200") {
+          // for (let i of re.data.data) {
+          //   this.$axios({
+          //     method: "get",
+          //     url: "/accountT",
+          //   });
+          // }
+          this.blogs = re.data.data;
+        }
       });
     } else {
       this.isLogin = false;
@@ -137,37 +146,24 @@ export default {
 
   methods: {
     go_userhome(user) {
-      alert(user);
+      this.$router.push(`/myhome/${user}`);
     },
 
     get_up(id, num, type) {
-      // 判断是否赞过或收藏过
-      // this.$axios({
-      //   method: '',
-      //   url: '',
-      //   data: data
-      // }).then(re => {
-      //   console.log(re)
-      // })
-
-      this.blogs.filter((a) => {
-        if (a.id == id && type == 1) {
-          a.star = num + 1;
-        } else if (a.id == id && type == 2) {
-          a.praised = num + 1;
-        }
-      });
-      num += 1;
-      console.log(num);
-
       // 保存点赞(收藏)记录
-      // this.$axios({
-      //   method: '',
-      //   url: '',
-      //   data: data
-      // }).then(re => {
-      //   console.log(re)
-      // })
+      this.$axios({
+        method: "put",
+        url: `/blog/like/${id}`,
+      }).then((re) => {
+        console.log(re);
+        this.blogs.filter((a) => {
+          if (a.id == id && type == 1) {
+            a.star = re.data.data;
+          } else if (a.id == id && type == 2) {
+            a.praised = re.data.data;
+          }
+        });
+      });
     },
 
     go_blog(id, type) {

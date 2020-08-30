@@ -27,8 +27,8 @@
 
         <el-divider direction="vertical"></el-divider>
 
-        <el-dropdown>
-          <span class="iconfont icon-letter"></span>
+        <el-dropdown trigger="click">
+          <span class="iconfont icon-letter" id="no"></span>
           <el-dropdown-menu slot="dropdown" class="message">
             <el-dropdown-item>
               @我的
@@ -123,20 +123,26 @@ export default {
     };
   },
 
-  created() {
-    // if (store.state.token != "") {
-    //   this.isLogin = true;
-    let url = window.location.pathname.split("/");
-    if (url[url.length - 2] == "home") {
-      this.ishome = true;
-    } else {
-      this.ishome = false;
-    }
-    //   // 这里拿数据
-    // } else {
-    //   this.isLogin = false;
-    // }
-  },
+  // created() {
+  //   if (store.state.token != "") {
+  //     this.isLogin = true;
+  //     let url = window.location.pathname.split("/");
+  //     if (url[url.length - 2] == "home") {
+  //       this.ishome = true;
+  //     } else {
+  //       this.ishome = false;
+  //     }
+  //     // 这里拿数据
+  //     this.$axios({
+  //       method: "",
+  //       url: "",
+  //     }).then((re) => {
+  //       console.log(re);
+  //     });
+  //   } else {
+  //     this.isLogin = false;
+  //   }
+  // },
 
   watch: {
     $route(to) {
@@ -168,9 +174,18 @@ export default {
     },
 
     logout() {
-      store.mutations.remove_token(store.state);
-      store.mutations.remove_username(store.state);
-      this.$router.go(0);
+      this.$axios({
+        method: "get",
+        url: "/account/logout",
+      }).then((re) => {
+        if (re.data.code == "200") {
+          store.mutations.remove_token(store.state);
+          store.mutations.remove_username(store.state);
+          this.$router.go(0);
+        } else {
+          this.$message.error("登出失败！");
+        }
+      });
     },
 
     search() {
@@ -315,10 +330,12 @@ export default {
   color: #fa7d3c;
 }
 
+#no,
 .ishome {
   color: #aaaaaa;
 }
 
+#no,
 .ishome:hover {
   cursor: no-drop;
   color: #aaaaaa;
