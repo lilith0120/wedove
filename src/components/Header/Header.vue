@@ -123,26 +123,26 @@ export default {
     };
   },
 
-  // created() {
-  //   if (store.state.token != "") {
-  //     this.isLogin = true;
-  //     let url = window.location.pathname.split("/");
-  //     if (url[url.length - 2] == "home") {
-  //       this.ishome = true;
-  //     } else {
-  //       this.ishome = false;
-  //     }
-  //     // 这里拿数据
-  //     this.$axios({
-  //       method: "",
-  //       url: "",
-  //     }).then((re) => {
-  //       console.log(re);
-  //     });
-  //   } else {
-  //     this.isLogin = false;
-  //   }
-  // },
+  created() {
+    if (store.state.token != "") {
+      this.isLogin = true;
+      let url = window.location.pathname.split("/");
+      if (url[url.length - 2] == "home") {
+        this.ishome = true;
+      } else {
+        this.ishome = false;
+      }
+      // 这里拿数据
+      this.$axios({
+        method: "",
+        url: "",
+      }).then((re) => {
+        console.log(re);
+      });
+    } else {
+      this.isLogin = false;
+    }
+  },
 
   watch: {
     $route(to) {

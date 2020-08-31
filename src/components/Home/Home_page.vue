@@ -59,36 +59,36 @@
 </template>
 
 <script>
-// import store from "../../store/store";
+import store from "../../store/store";
 
 export default {
   name: "Home_page",
 
   data() {
     return {
-      isLogin: true,
+      isLogin: false,
       avatar: require("../../assets/avatar.png"),
-      username: "行露的吸血鬼",
-      attention_num: 41,
-      fan_num: 21,
-      blog_num: 367,
+      username: "",
+      attention_num: 0,
+      fan_num: 0,
+      blog_num: 0,
     };
   },
 
-  // created() {
-  //   if (store.state.token != "") {
-  //     this.isLogin = true;
-  //   } else {
-  //     this.isLogin = false;
-  //   }
+  created() {
+    if (store.state.token != "") {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+    }
 
-  //   this.$axios({
-  //     method: "",
-  //     url: ""
-  //   }).then(re => {
-  //     console.log(re);
-  //   });
-  // },
+    this.$axios({
+      method: "",
+      url: "",
+    }).then((re) => {
+      console.log(re);
+    });
+  },
 
   methods: {
     go_myhome() {

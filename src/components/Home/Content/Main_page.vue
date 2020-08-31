@@ -39,8 +39,8 @@
               <span class="b_tip" v-else>{{blog.repostNumber}}</span>
             </i>
           </li>
-          <el-popover placement="bottom" width="600" trigger="click">
-            <Commit></Commit>
+          <el-popover class="com" placement="bottom-end" width="600" :offset="152" trigger="click">
+            <Commit :id="blog.blogID"></Commit>
             <li class="b_tips" id="commit" slot="reference">
               <i class="iconfont icon-commit">
                 <span class="b_tip" v-if="blog.commentNumber == 0">评论</span>
@@ -81,17 +81,17 @@ export default {
       isLogin: false,
       isShow: [],
       blogs: [
-        {
-          blogID: 1,
-          avatar: require("../../../assets/avatar.png"),
-          name: "天问",
-          releaseTime: "2020-07-16 23:44",
-          content: "<p>要睡觉了！<br></p>",
-          star: 0,
-          repostNumber: 0,
-          commentNumber: 2,
-          likeNumber: 3,
-        },
+        // {
+        //   blogID: 1,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   name: "天问",
+        //   releaseTime: "2020-07-16 23:44",
+        //   content: "<p>要睡觉了！<br></p>",
+        //   star: 0,
+        //   repostNumber: 0,
+        //   commentNumber: 2,
+        //   likeNumber: 3,
+        // },
       ],
     };
   },
@@ -277,5 +277,9 @@ export default {
 <style>
 .el-popover {
   padding: 0;
+}
+
+.el-popper {
+  background-color: #f2f2f5;
 }
 </style>

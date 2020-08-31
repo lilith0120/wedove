@@ -126,17 +126,18 @@ export default {
       };
 
       console.log(data);
-      console.log(store);
 
       this.$axios({
-        method: "get",
+        method: "post",
         url: "/account/login",
-        params: data,
+        data: data,
       }).then((re) => {
-        //console.log(re);
+        console.log(re);
         if (re.data.code == "200") {
           store.mutations.set_token(store.state, re.data.token);
           store.mutations.set_username(store.state, re.data.username);
+          console.log(store);
+
           if (this.remember) {
             this.set_cookie(this.user, this.pswd, 7);
           } else {
