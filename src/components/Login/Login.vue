@@ -45,7 +45,6 @@ export default {
 
   data() {
     return {
-      isShow: false,
       user: "",
       name: "",
       email: "",
@@ -56,6 +55,12 @@ export default {
 
   created() {
     this.get_cookie();
+  },
+
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
   },
 
   methods: {
@@ -134,17 +139,26 @@ export default {
       }).then((re) => {
         console.log(re);
         if (re.data.code == "200") {
-          store.mutations.set_token(store.state, re.data.token);
-          store.mutations.set_username(store.state, re.data.username);
-          console.log(store);
+          this.$axios({
+            method: "get",
+            url: "/accountT",
+          }).then((re) => {
+            if (re.data.code == "200") {
+              store.commit("set_username", re.data.data.name);
+              console.log(store);
+            }
+          });
 
           if (this.remember) {
             this.set_cookie(this.user, this.pswd, 7);
           } else {
             this.delete_cookie;
           }
+
+          this.$emit("show_login", false);
+          // this.$router.go(0);
         } else {
-          let msg = re.data.message;
+          let msg = re.data.msg;
           this.$message.error(msg);
         }
       });

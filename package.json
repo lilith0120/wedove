@@ -16,6 +16,7 @@
     "vue-at": "^2.3.2",
     "vue-cropper": "^0.5.4",
     "vue-router": "^3.3.4",
+    "vuex": "^3.5.1",
     "wangeditor": "^3.1.1"
   },
   "devDependencies": {

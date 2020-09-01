@@ -78,9 +78,9 @@ export default {
       console.log(data);
 
       this.$axios({
-        method: "get",
+        method: "put",
         url: "/accountT/password",
-        params: data,
+        data: data,
       }).then((re) => {
         if (re.data.code != "200") {
           let msg = re.data.msg;

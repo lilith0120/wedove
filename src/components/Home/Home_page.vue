@@ -68,26 +68,61 @@ export default {
     return {
       isLogin: false,
       avatar: require("../../assets/avatar.png"),
-      username: "",
       attention_num: 0,
       fan_num: 0,
       blog_num: 0,
     };
   },
 
+  computed: {
+    username() {
+      return store.state.username;
+    },
+  },
+
   created() {
-    if (store.state.token != "") {
+    if (store.state.username != "") {
       this.isLogin = true;
+
+      this.$axios({
+        method: "get",
+        url: "/accountT",
+      }).then((re) => {
+        console.log(re);
+        if (re.data.code == "200") {
+          this.avatar = `https://39.101.199.3:443/${re.data.data.avatar}`;
+          this.attention_num = re.data.data.followNum;
+          this.fan_num = re.data.data.fanNum;
+          this.blog_num = re.data.data.blogNum;
+        }
+      });
     } else {
       this.isLogin = false;
     }
+  },
 
-    this.$axios({
-      method: "",
-      url: "",
-    }).then((re) => {
-      console.log(re);
-    });
+  watch: {
+    username(newValue) {
+      if (newValue != "") {
+        this.isLogin = true;
+
+        this.$axios({
+          method: "get",
+          url: "/accountT",
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") {
+            console.log(re.data.data.avatar);
+            this.avatar = `https://39.101.199.3:443/${re.data.data.avatar}`;
+            this.attention_num = re.data.data.followNum;
+            this.fan_num = re.data.data.fanNum;
+            this.blog_num = re.data.data.blogNum;
+          }
+        });
+      } else {
+        this.isLogin = false;
+      }
+    },
   },
 
   methods: {

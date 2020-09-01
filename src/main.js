@@ -7,6 +7,7 @@ import './assets/icon/iconfont.css'
 import axios from 'axios'
 import store from './store/store'
 
+axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = 'https://39.101.199.3:443/'
 
 // 请求拦截 

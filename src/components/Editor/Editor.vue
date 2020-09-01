@@ -115,6 +115,10 @@ export default {
             message: "发布成功！",
             type: "success",
           });
+
+          this.blog = "";
+          this.$router.push("/home/main");
+          this.$router.go(0);
         }
       });
     },

@@ -101,6 +101,7 @@ export default {
 
       this.$refs.cropper.getCropBlob((data) => {
         // let img = window.URL.createObjectURL(data);
+        // console.log(img);
         let form_data = new FormData();
         form_data.append("avatar", data);
 
@@ -110,6 +111,7 @@ export default {
           data: form_data,
           headers: { "Content-Type": "multipart/form-data" },
         }).then((re) => {
+          console.log(re);
           if (re.data.code != "200") {
             let msg = re.data.msg;
             this.$message.error(msg);

@@ -78,7 +78,7 @@
       append-to-body
       center
     >
-      <Login></Login>
+      <Login @show_login="show_login"></Login>
     </el-dialog>
 
     <el-dialog
@@ -113,18 +113,23 @@ export default {
     return {
       ishome: true,
       search_key: "",
-      isLogin: true,
+      isLogin: false,
       isShow: false,
       isEdit: false,
-      username: "行露的吸血鬼",
-      at_me: 12,
-      commit: 233,
-      support: 77,
+      at_me: 0,
+      commit: 0,
+      support: 0,
     };
   },
 
+  computed: {
+    username() {
+      return store.state.username;
+    },
+  },
+
   created() {
-    if (store.state.token != "") {
+    if (store.state.username != "") {
       this.isLogin = true;
       let url = window.location.pathname.split("/");
       if (url[url.length - 2] == "home") {
@@ -134,14 +139,18 @@ export default {
       }
       // 这里拿数据
       this.$axios({
-        method: "",
-        url: "",
+        method: "get",
+        url: "/accountT",
       }).then((re) => {
         console.log(re);
+        if (re.data.code == "200") {
+          store.commit("set_username", re.data.data.name);
+        }
       });
     } else {
       this.isLogin = false;
     }
+    console.log(store.state.username);
   },
 
   watch: {
@@ -179,7 +188,6 @@ export default {
         url: "/account/logout",
       }).then((re) => {
         if (re.data.code == "200") {
-          store.mutations.remove_token(store.state);
           store.mutations.remove_username(store.state);
           this.$router.go(0);
         } else {
@@ -208,6 +216,11 @@ export default {
       if (!this.ishome) {
         this.isEdit = true;
       }
+    },
+
+    show_login(isShow) {
+      this.isShow = isShow;
+      this.isLogin = true;
     },
   },
 };
