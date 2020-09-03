@@ -79,8 +79,9 @@ export default {
       if (document.cookie.length > 0) {
         let arr = document.cookie.split(";");
         for (let i of arr) {
+          // console.log(i);
           let a = i.split("=");
-          if (a[0] == " user") {
+          if (a[0] == "user") {
             this.user = a[1];
           } else if (a[0] == " pswd") {
             this.pswd = a[1];
@@ -152,7 +153,7 @@ export default {
           if (this.remember) {
             this.set_cookie(this.user, this.pswd, 7);
           } else {
-            this.delete_cookie;
+            this.delete_cookie();
           }
 
           this.$emit("show_login", false);

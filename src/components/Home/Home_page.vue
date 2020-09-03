@@ -20,7 +20,7 @@
         </el-menu>
       </div>
 
-      <router-view></router-view>
+      <router-view v-if="isRouterAlive"></router-view>
 
       <div
         id="message"
@@ -64,8 +64,15 @@ import store from "../../store/store";
 export default {
   name: "Home_page",
 
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
+
   data() {
     return {
+      isRouterAlive: true,
       isLogin: false,
       avatar: require("../../assets/avatar.png"),
       attention_num: 0,
@@ -90,10 +97,19 @@ export default {
       }).then((re) => {
         console.log(re);
         if (re.data.code == "200") {
-          this.avatar = `https://39.101.199.3:443/${re.data.data.avatar}`;
           this.attention_num = re.data.data.followNum;
           this.fan_num = re.data.data.fanNum;
           this.blog_num = re.data.data.blogNum;
+          let user_id = re.data.data.accountID;
+
+          this.$axios({
+            method: "get",
+            url: `/accountT/avatar/${user_id}`,
+          }).then((re) => {
+            if (re.data.code == "200") {
+              this.avatar = `data:image/png;base64,${re.data.data}`;
+            }
+          });
         }
       });
     } else {
@@ -112,20 +128,42 @@ export default {
         }).then((re) => {
           console.log(re);
           if (re.data.code == "200") {
-            console.log(re.data.data.avatar);
-            this.avatar = `https://39.101.199.3:443/${re.data.data.avatar}`;
             this.attention_num = re.data.data.followNum;
             this.fan_num = re.data.data.fanNum;
             this.blog_num = re.data.data.blogNum;
+            let user_id = re.data.data.accountID;
+
+            this.$axios({
+              method: "get",
+              url: `/accountT/avatar/${user_id}`,
+            }).then((re) => {
+              if (re.data.code == "200") {
+                this.avatar = `data:image/png;base64,${re.data.data}`;
+              }
+            });
           }
         });
       } else {
         this.isLogin = false;
       }
     },
+
+    // $route(to) {
+    //   console.log(to.path);
+    //   if (to.path == "/home/main") {
+    //     this.reload();
+    //   }
+    // },
   },
 
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
+
     go_myhome() {
       this.$router.push(`/myhome/${this.username}`);
     },

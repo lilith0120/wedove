@@ -48,7 +48,7 @@ export default {
         ];
         editor.customConfig.onchange = () => {
           this.blog = editor.txt.html();
-          console.log(this.blog); //
+          // console.log(this.blog); //
         };
 
         console.log(this.emotions);
@@ -116,9 +116,7 @@ export default {
             type: "success",
           });
 
-          this.blog = "";
-          this.$router.push("/home/main");
-          this.$router.go(0);
+          this.$emit("send_blog", true);
         }
       });
     },

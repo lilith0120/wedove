@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '../store/store'
+import store from '../store/store'
 
 Vue.use(VueRouter)
 
@@ -127,19 +127,19 @@ const router = new VueRouter({
     ]
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (store.state.token != ""
-//         || to.path == '/'
-//         || to.path == '/register'
-//         || to.path == '/forget') {
-//         next()
-//     }
-//     else {
-//         next({
-//             name: 'home'
-//         });
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    if (store.state.username != ""
+        || to.path == '/register'
+        || to.path == '/forget'
+        || to.path == '/home/main') {
+        next()
+    }
+    else {
+        next({
+            name: 'home'
+        });
+    }
+});
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

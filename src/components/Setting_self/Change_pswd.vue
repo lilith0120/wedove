@@ -90,6 +90,10 @@ export default {
             message: "修改密码成功！",
             type: "success",
           });
+
+          this.o_pswd = "";
+          this.n_pswd = "";
+          this.r_pswd = "";
         }
       });
     },

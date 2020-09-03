@@ -1,7 +1,7 @@
 <template>
-  <div id="main_page">
+  <div id="main_page" v-if="isRouterAlive">
     <div id="s_blog">
-      <Editor></Editor>
+      <Editor @send_blog="send_blog"></Editor>
     </div>
 
     <div class="b_content" v-for="(blog, index) in blogs" :key="index">
@@ -27,10 +27,10 @@
 
       <div class="b_bottom">
         <ul>
-          <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.star, 1)" disabled>
+          <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.star, 1)">
             <i class="iconfont icon-star">
-              <span class="b_tip" v-if="blog.star == 0">收藏</span>
-              <span class="b_tip" v-else>{{blog.star}}</span>
+              <span class="b_tip">收藏</span>
+              <!-- <span class="b_tip" v-else>{{blog.star}}</span> -->
             </i>
           </li>
           <li class="b_tips" id="forward" @click="go_blog(blog.blogID, 1)">
@@ -65,7 +65,6 @@
 import Editor from "../../Editor/Editor";
 import userCard from "../Content/User_card";
 import Commit from "../Content/Commit";
-import store from "../../../store/store";
 
 export default {
   name: "Main_page",
@@ -76,51 +75,62 @@ export default {
     Commit,
   },
 
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
+
   data() {
     return {
+      isRouterAlive: true,
       isLogin: false,
       isShow: [],
-      blogs: [
-        // {
-        //   blogID: 1,
-        //   avatar: require("../../../assets/avatar.png"),
-        //   name: "天问",
-        //   releaseTime: "2020-07-16 23:44",
-        //   content: "<p>要睡觉了！<br></p>",
-        //   star: 0,
-        //   repostNumber: 0,
-        //   commentNumber: 2,
-        //   likeNumber: 3,
-        // },
-      ],
+      blogs: [],
     };
   },
 
   created() {
-    if (store.state.token != "") {
-      this.isLogin = true;
-
-      this.$axios({
-        method: "get",
-        url: "/blog/all",
-      }).then((re) => {
-        console.log(re);
-        if (re.data.code == "200") {
-          // for (let i of re.data.data) {
-          //   this.$axios({
-          //     method: "get",
-          //     url: "/accountT",
-          //   });
-          // }
-          this.blogs = re.data.data;
+    this.$axios({
+      method: "get",
+      url: "/blog/all",
+    }).then((re) => {
+      // console.log(re);
+      if (re.data.code == "200") {
+        for (let i of re.data.data) {
+          this.$axios({
+            method: "get",
+            url: `/accountT/avatar/${i.accountID}`,
+          }).then((r) => {
+            // console.log(r);
+            i.avatar = `data:image/png;base64,${r.data.data}`;
+            this.blogs.push(i);
+          });
         }
-      });
-    } else {
-      this.isLogin = false;
-    }
+      }
+    });
   },
 
+  // watch: {
+  //   $route(to) {
+  //     if (to.path == "/home/main") {
+  //       this.reload();
+  //     }
+  //   },
+  // },
+
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
+
+    send_blog() {
+      this.reload();
+    },
+
     go_userhome(user) {
       this.$router.push(`/myhome/${user}`);
     },
@@ -271,6 +281,11 @@ export default {
 #commit {
   border-right: 1px #d9d9d9 solid;
   box-sizing: border-box;
+}
+
+#star:hover {
+  cursor: no-drop;
+  color: #919191;
 }
 </style>
 

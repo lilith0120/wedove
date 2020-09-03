@@ -39,14 +39,14 @@ axios.interceptors.response.use(response => {
   if (error.response) {
     switch (error.response.status) {
       case 401:
-        store.mutations.remove_token(store.state);
-        store.mutations.remove_username(store.state);
+        store.commit("remove_username");
         router.replace({
           path: 'home',
         });
         break;
     }
   }
+
   return Promise.reject(error.response.data)
 });
 Vue.prototype.$axios = axios

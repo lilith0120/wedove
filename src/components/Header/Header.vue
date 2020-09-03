@@ -188,7 +188,7 @@ export default {
         url: "/account/logout",
       }).then((re) => {
         if (re.data.code == "200") {
-          store.mutations.remove_username(store.state);
+          store.commit("remove_username");
           this.$router.go(0);
         } else {
           this.$message.error("登出失败！");

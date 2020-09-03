@@ -101,9 +101,9 @@ export default {
 
       this.$refs.cropper.getCropBlob((data) => {
         // let img = window.URL.createObjectURL(data);
-        // console.log(img);
+        console.log(Date.now() + ".png");
         let form_data = new FormData();
-        form_data.append("avatar", data);
+        form_data.append("avatar", data, Date.now() + ".png");
 
         this.$axios({
           method: "put",

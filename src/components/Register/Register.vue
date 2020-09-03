@@ -175,7 +175,7 @@ export default {
         params: data,
       }).then((re) => {
         console.log(re);
-        if (re.status != 200) {
+        if (!re.data) {
           this.name_warn2 = true;
         }
       });
@@ -219,7 +219,7 @@ export default {
         url: "/account/register/validateEMail",
         params: data,
       }).then((re) => {
-        if (re.status != 200) {
+        if (!re.data) {
           this.email_warn2 = true;
           this.isSend = true;
         }
