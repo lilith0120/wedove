@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import store from "../../../store/store";
+
 export default {
   name: "User_card",
 
@@ -45,7 +47,7 @@ export default {
     };
   },
 
-  props: ["isShow", "user"],
+  props: ["isShow", "user", "id"],
 
   watch: {
     isShow(newValue) {
@@ -53,12 +55,33 @@ export default {
         // 查看资料，以及是否关注
         this.$axios({
           method: "get",
-          url: "/followList/follow",
+          url: `/accountT/read/${this.id}`,
         }).then((re) => {
-          for (let i in re.data.data) {
-            if (i.followID == this.id) {
-              this.isAttention = true;
-              break;
+          if (re.data.code == "200") {
+            this.attention_num = re.data.data.followNum;
+            this.fan_num = re.data.data.fanNum;
+            this.blog_num = re.data.data.blogNum;
+
+            this.$axios({
+              method: "get",
+              url: `/accountT/avatar/${this.id}`,
+            }).then((r) => {
+              // console.log(r);
+              this.avatar = `data:image/png;base64,${r.data.data}`;
+            });
+
+            if (this.id != store.state.id) {
+              this.$axios({
+                method: "get",
+                url: "/followList/follow",
+              }).then((e) => {
+                for (let i in e.data.data) {
+                  if (i.followID == this.id) {
+                    this.isAttention = true;
+                    break;
+                  }
+                }
+              });
             }
           }
         });

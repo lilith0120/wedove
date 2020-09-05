@@ -175,7 +175,7 @@ export default {
     },
 
     go_myhome() {
-      this.$router.push(`/myhome/${this.username}`);
+      this.$router.push(`/myhome/${store.state.id}`);
     },
 
     go_setting() {

@@ -59,7 +59,11 @@ export default {
 
   computed: {
     username() {
-      return this.$store.state.username;
+      return store.state.username;
+    },
+
+    id() {
+      return store.state.id;
     },
   },
 
@@ -146,6 +150,8 @@ export default {
           }).then((re) => {
             if (re.data.code == "200") {
               store.commit("set_username", re.data.data.name);
+              store.commit("set_id", re.data.data.accountID);
+              console.log(store);
             }
           });
 

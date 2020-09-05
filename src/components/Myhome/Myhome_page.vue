@@ -40,20 +40,75 @@ export default {
   },
 
   created() {
-    this.username = this.$route.params.user;
-    if (store.state.username != this.username) {
+    this.id = this.$route.params.id;
+    if (store.state.id != this.id) {
       this.isMe = false;
-    } else {
-      this.isMe = true;
 
       this.$axios({
         method: "get",
-        url: "/accountT",
+        url: "/followList/follow",
+      }).then((re) => {
+        for (let i in re.data.data) {
+          if (i.followID == this.id) {
+            this.isAttention = true;
+            break;
+          }
+        }
+      });
+    } else {
+      this.isMe = true;
+    }
+
+    this.$axios({
+      method: "get",
+      url: `/accountT/read/${this.id}`,
+    }).then((re) => {
+      console.log(re);
+      if (re.data.code == "200") {
+        this.signature = re.data.data.individualitySignature;
+        this.username = re.data.data.name;
+
+        this.$axios({
+          method: "get",
+          url: `/accountT/avatar/${this.id}`,
+        }).then((re) => {
+          if (re.data.code == "200") {
+            this.avatar = `data:image/png;base64,${re.data.data}`;
+          }
+        });
+      }
+    });
+  },
+
+  watch: {
+    $route(to) {
+      this.username = to.params.user;
+      if (store.state.username != this.username) {
+        this.isMe = false;
+
+        this.$axios({
+          method: "get",
+          url: "/followList/follow",
+        }).then((re) => {
+          for (let i in re.data.data) {
+            if (i.followID == this.id) {
+              this.isAttention = true;
+              break;
+            }
+          }
+        });
+      } else {
+        this.isMe = true;
+      }
+
+      this.$axios({
+        method: "get",
+        url: `/accountT/read/${this.id}`,
       }).then((re) => {
         console.log(re);
         if (re.data.code == "200") {
           this.signature = re.data.data.individualitySignature;
-          this.id = re.data.data.accountID;
+          this.username = re.data.data.name;
 
           this.$axios({
             method: "get",
@@ -63,63 +118,8 @@ export default {
               this.avatar = `data:image/png;base64,${re.data.data}`;
             }
           });
-
-          this.$axios({
-            method: "get",
-            url: "/followList/follow",
-          }).then((re) => {
-            for (let i in re.data.data) {
-              if (i.followID == this.id) {
-                this.isAttention = true;
-                break;
-              }
-            }
-          });
         }
       });
-    }
-  },
-
-  watch: {
-    $route(to) {
-      this.username = to.params.user;
-      if (store.state.username != this.username) {
-        this.isMe = false;
-      } else {
-        this.isMe = true;
-
-        this.$axios({
-          method: "get",
-          url: "/accountT",
-        }).then((re) => {
-          console.log(re);
-          if (re.data.code == "200") {
-            this.signature = re.data.data.individualitySignature;
-            this.id = re.data.data.accountID;
-
-            this.$axios({
-              method: "get",
-              url: `/accountT/avatar/${this.id}`,
-            }).then((re) => {
-              if (re.data.code == "200") {
-                this.avatar = `data:image/png;base64,${re.data.data}`;
-              }
-            });
-
-            this.$axios({
-              method: "get",
-              url: "/followList/follow",
-            }).then((re) => {
-              for (let i in re.data.data) {
-                if (i.followID == this.id) {
-                  this.isAttention = true;
-                  break;
-                }
-              }
-            });
-          }
-        });
-      }
     },
   },
 

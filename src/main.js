@@ -40,6 +40,7 @@ axios.interceptors.response.use(response => {
     switch (error.response.status) {
       case 401:
         store.commit("remove_username");
+        store.commit("remove_id");
         router.replace({
           path: 'home',
         });

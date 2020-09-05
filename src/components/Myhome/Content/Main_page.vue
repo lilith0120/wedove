@@ -32,8 +32,12 @@
               @show="isShow.splice(index, 1, true)"
               @hide="isShow.splice(index, 1, false)"
             >
-              <user-card :isShow="isShow[index]" :user="blog.name"></user-card>
-              <div class="b_user" slot="reference" @click="go_userhome(blog.name)">{{blog.name}}</div>
+              <user-card :isShow="isShow[index]" :user="blog.name" :id="blog.accountID"></user-card>
+              <div
+                class="b_user"
+                slot="reference"
+                @click="go_userhome(blog.accountID)"
+              >{{blog.name}}</div>
             </el-popover>
 
             <div class="b_time">{{blog.releaseTime}}</div>
@@ -104,6 +108,7 @@ export default {
 
   data() {
     return {
+      id: 0,
       isRouterAlive: true,
       attention_num: 0,
       fan_num: 0,
@@ -126,9 +131,10 @@ export default {
   },
 
   created() {
+    this.id = this.$route.params.id;
     this.$axios({
       method: "get",
-      url: "/blog/all",
+      url: `/blog/read/${this.id}`,
     }).then((re) => {
       // console.log(re);
       if (re.data.code == "200") {
@@ -145,7 +151,7 @@ export default {
 
         this.$axios({
           method: "get",
-          url: "/accountT",
+          url: `/accountT/read/${this.id}`,
         }).then((re) => {
           if (re.data.code == "200") {
             this.attention_num = re.data.data.followNum;

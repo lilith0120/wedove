@@ -94,7 +94,7 @@ const router = new VueRouter({
             name: 'forget'
         },
         {
-            path: '/myhome/:user',
+            path: '/myhome/:id',
             component: myhome,
             name: 'myhome',
             redirect: { name: 'myhome_page' },

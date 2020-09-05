@@ -5,17 +5,17 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')) : {
-        token: "",
+        id: "",
         username: "",
     },
 
     mutations: {
-        set_token(state, token) {
-            state.token = token
+        set_id(state, id) {
+            state.id = id
         },
 
-        remove_token(state) {
-            state.token = ""
+        remove_id(state) {
+            state.id = ""
         },
 
         set_username(state, username) {

@@ -165,16 +165,16 @@ export default {
     },
 
     go_myhome() {
-      this.$router.push(`/myhome/${this.username}`);
+      this.$router.push(`/myhome/${store.state.id}`);
     },
 
     go_msg(type) {
       if (type == 3) {
-        this.$router.push(`/myhome/${this.username}`);
+        this.$router.push(`/myhome/${store.state.id}`);
       } else if (type == 1) {
-        this.$router.push(`/myhome/${this.username}/attention`);
+        this.$router.push(`/myhome/${store.state.id}/attention`);
       } else {
-        this.$router.push(`/myhome/${this.username}/fan`);
+        this.$router.push(`/myhome/${store.state.id}/fan`);
       }
     },
 

@@ -221,7 +221,6 @@ export default {
       }).then((re) => {
         if (!re.data) {
           this.email_warn2 = true;
-          this.isSend = true;
         }
       });
     },

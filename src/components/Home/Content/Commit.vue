@@ -2,7 +2,7 @@
   <div id="commit" v-if="isRouterAlive">
     <div id="add_commit">
       <el-input class="input" type="textarea" autosize v-model="commit"></el-input>
-      <el-button id="btn" @click="send_commit(0)">评论</el-button>
+      <el-button id="btn" @click="send_commit(0, 0)">评论</el-button>
     </div>
 
     <div class="show_commit" v-for="(commit, index) in commits" :key="index">
@@ -15,10 +15,35 @@
             @show="isShow.splice(index, 1, true)"
             @hide="isShow.splice(index, 1, false)"
           >
-            <user-card :isShow="isShow[index]" :user="commit.name"></user-card>
-            <div class="b_user" slot="reference" @click="go_userhome(commit.name)">{{commit.name}} :</div>
+            <user-card :isShow="isShow[index]" :user="commit.name" :id="commit.accountID"></user-card>
+            <div
+              class="b_user"
+              slot="reference"
+              @click="go_userhome(commit.accountID)"
+            >{{commit.name}} :</div>
           </el-popover>
-          <div class="b_m_content">{{commit.content}}</div>
+          <div class="b_m_content" v-if="commit.receivedID == 0">{{commit.content}}</div>
+          <div class="b_m_content" v-else>
+            <el-popover
+              placement="top"
+              width="350"
+              trigger="hover"
+              @show="isShow.splice(index, 1, true)"
+              @hide="isShow.splice(index, 1, false)"
+            >
+              <user-card
+                :isShow="isShow[index]"
+                :user="commit.receivedName"
+                :id="commit.receivedID"
+              ></user-card>
+              <div
+                class="b_user"
+                slot="reference"
+                @click="go_userhome(commit.receivedID)"
+              >回复{{commit.receivedName}} :</div>
+            </el-popover>
+            {{commit.content}}
+          </div>
 
           <div class="b_time">
             <span>{{commit.commentTime}}</span>
@@ -95,6 +120,7 @@ export default {
     }).then((re) => {
       if (re.data.code == "200") {
         this.commits = re.data.data;
+        // console.log(this.commits);
       }
     });
   },

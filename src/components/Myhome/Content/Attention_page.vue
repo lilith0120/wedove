@@ -32,8 +32,12 @@
                 @show="isShow.splice(index, 1, true)"
                 @hide="isShow.splice(index, 1, false)"
               >
-                <user-card :isShow="isShow[index]" :user="blog.user"></user-card>
-                <div class="b_user" slot="reference" @click="go_userhome(blog.user)">{{blog.user}}</div>
+                <user-card :isShow="isShow[index]" :user="blog.user" :id="blog.accountID"></user-card>
+                <div
+                  class="b_user"
+                  slot="reference"
+                  @click="go_userhome(blog.accountID)"
+                >{{blog.user}}</div>
               </el-popover>
             </div>
 
@@ -44,27 +48,27 @@
                   <span
                     class="b_num"
                     v-if="blog.attention_num < 10000"
-                    @click="go_msg(1, blog.user)"
+                    @click="go_msg(1, blog.accountID)"
                   >{{blog.attention_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(1, blog.user)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(1, blog.accountID)">9999+</span>
                 </li>
                 <li id="fan">
                   <span class="tip">粉丝</span>
                   <span
                     class="b_num"
                     v-if="blog.fan_num < 10000"
-                    @click="go_msg(2, blog.user)"
+                    @click="go_msg(2, blog.accountID)"
                   >{{blog.fan_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(2, blog.user)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(2, blog.accountID)">9999+</span>
                 </li>
                 <li id="blog">
                   <span class="tip">微博</span>
                   <span
                     class="b_num"
                     v-if="blog.blog_num < 10000"
-                    @click="go_msg(3, blog.user)"
+                    @click="go_msg(3, blog.accountID)"
                   >{{blog.blog_num}}</span>
-                  <span class="b_num" v-else @click="go_msg(3, blog.user)">9999+</span>
+                  <span class="b_num" v-else @click="go_msg(3, blog.accountID)">9999+</span>
                 </li>
               </ul>
             </div>
@@ -87,6 +91,7 @@ export default {
 
   data() {
     return {
+      id: 0,
       attention_num: 0,
       fan_num: 0,
       isShow: [],
@@ -104,20 +109,46 @@ export default {
   },
 
   created() {
+    this.id = this.$route.params.id;
     this.$axios({
       method: "get",
-      url: "/accountT",
+      url: `/accountT/read/${this.id}`,
     }).then((re) => {
       this.attention_num = re.data.data.followNum;
       this.fan_num = re.data.data.fanNum;
     });
 
-    // this.$axios({
-    //   method: "get",
-    //   url: "/followList/follow",
-    // }).then(re => {
-
-    // })
+    this.$axios({
+      method: "get",
+      url: `/followList/follow/read/${this.id}`,
+    }).then((re) => {
+      if (re.data.code == "200") {
+        for (let i = 0; i < re.data.data.length; i++) {
+          let d = {};
+          let ID = re.data.data[i].followID;
+          d.accountID = re.data.data[i].followID;
+          this.$axios({
+            method: "get",
+            url: `/accountT/read/${ID}`,
+          }).then((r) => {
+            d.user = r.data.data.name;
+            d.attention_num = r.data.data.followNum;
+            d.fan_num = r.data.data.fanNum;
+            d.blog_num = r.data.data.blogNum;
+            this.$axios({
+              method: "get",
+              url: `/accountT/avatar/${ID}`,
+            }).then((re) => {
+              if (re.data.code == "200") {
+                d.avatar = `data:image/png;base64,${re.data.data}`;
+              }
+            });
+          });
+          this.blogs.push(d);
+        }
+        console.log(this.blogs);
+      }
+    });
   },
 
   methods: {

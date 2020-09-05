@@ -15,8 +15,8 @@
             @show="isShow.splice(index, 1, true)"
             @hide="isShow.splice(index, 1, false)"
           >
-            <user-card :isShow="isShow[index]" :user="blog.name"></user-card>
-            <div class="b_user" slot="reference" @click="go_userhome(blog.name)">{{blog.name}}</div>
+            <user-card :isShow="isShow[index]" :user="blog.name" :id="blog.accountID"></user-card>
+            <div class="b_user" slot="reference" @click="go_userhome(blog.accountID)">{{blog.name}}</div>
           </el-popover>
 
           <div class="b_time">{{blog.releaseTime}}</div>
