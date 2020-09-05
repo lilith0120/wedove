@@ -32,11 +32,11 @@
               @show="isShow.splice(index, 1, true)"
               @hide="isShow.splice(index, 1, false)"
             >
-              <user-card :isShow="isShow[index]" :user="blog.user"></user-card>
-              <div class="b_user" slot="reference" @click="go_userhome(blog.user)">{{blog.user}}</div>
+              <user-card :isShow="isShow[index]" :user="blog.name"></user-card>
+              <div class="b_user" slot="reference" @click="go_userhome(blog.name)">{{blog.name}}</div>
             </el-popover>
 
-            <div class="b_time">{{blog.time}}</div>
+            <div class="b_time">{{blog.releaseTime}}</div>
           </div>
         </div>
 
@@ -44,28 +44,37 @@
 
         <div class="b_bottom">
           <ul>
-            <li class="b_tips" id="star" @click="get_up(blog.id, blog.star, 1)">
+            <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.collectNumber, 1)">
               <i class="iconfont icon-star">
-                <span class="b_tip" v-if="blog.star == 0">收藏</span>
-                <span class="b_tip" v-else>{{blog.star}}</span>
+                <span class="b_tip" v-if="blog.collectNumber == 0">收藏</span>
+                <span class="b_tip" v-else>{{blog.collectNumber}}</span>
               </i>
             </li>
-            <li class="b_tips" id="forward" @click="go_blog(blog.id, 1)">
+            <li class="b_tips" id="forward" @click="go_blog(blog.blogID, 1)">
               <i class="iconfont icon-forward">
-                <span class="b_tip" v-if="blog.forward == 0">转发</span>
-                <span class="b_tip" v-else>{{blog.forward}}</span>
+                <span class="b_tip" v-if="blog.repostNumber == 0">转发</span>
+                <span class="b_tip" v-else>{{blog.repostNumber}}</span>
               </i>
             </li>
-            <li class="b_tips" id="commit" @click="go_blog(blog.id, 2)">
-              <i class="iconfont icon-commit">
-                <span class="b_tip" v-if="blog.commit == 0">评论</span>
-                <span class="b_tip" v-else>{{blog.commit}}</span>
-              </i>
-            </li>
-            <li class="b_tips" id="praised" @click="get_up(blog.id, blog.praised, 2)">
+            <el-popover
+              class="com"
+              placement="bottom-end"
+              width="600"
+              :offset="152"
+              trigger="click"
+            >
+              <Commit :id="blog.blogID" @commit_num="commit_num" v-if="isRouterAlive"></Commit>
+              <li class="b_tips" id="commit" slot="reference">
+                <i class="iconfont icon-commit">
+                  <span class="b_tip" v-if="blog.commentNumber == 0">评论</span>
+                  <span class="b_tip" v-else>{{blog.commentNumber}}</span>
+                </i>
+              </li>
+            </el-popover>
+            <li class="b_tips" id="praised" @click="get_up(blog.blogID, blog.likeNumber, 2)">
               <i class="iconfont icon-praised">
-                <span class="b_tip" v-if="blog.praised == 0">赞</span>
-                <span class="b_tip" v-else>{{blog.praised}}</span>
+                <span class="b_tip" v-if="blog.likeNumber == 0">赞</span>
+                <span class="b_tip" v-else>{{blog.likeNumber}}</span>
               </i>
             </li>
           </ul>
@@ -77,70 +86,95 @@
 
 <script>
 import userCard from "../../Home/Content/User_card";
+import Commit from "../../Home/Content/Commit";
 
 export default {
   name: "My_main_page",
 
   components: {
     userCard,
+    Commit,
+  },
+
+  provide() {
+    return {
+      reload: this.reload,
+    };
   },
 
   data() {
     return {
+      isRouterAlive: true,
       attention_num: 0,
       fan_num: 0,
       blog_num: 0,
       isShow: [],
       blogs: [
-        {
-          id: 1,
-          avatar: require("../../../assets/avatar.png"),
-          user: "天问",
-          time: "2020-07-16 23:44",
-          content: "<p>要睡觉了！<br></p>",
-          star: 0,
-          forward: 0,
-          commit: 2,
-          praised: 3,
-        },
-        {
-          id: 2,
-          avatar: require("../../../assets/avatar.png"),
-          user: "九歌",
-          time: "2020-07-18 16:30",
-          content: "<p>好饿啊！</p><p>想吃好吃的！</p><p>呜呜呜！</p>",
-          star: 1,
-          forward: 2,
-          commit: 0,
-          praised: 0,
-        },
-        {
-          id: 3,
-          avatar: require("../../../assets/avatar.png"),
-          user: "九歌",
-          time: "2020-07-18 21:38",
-          content: `<p><img src="http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/d5/2018new_yueliang_org.png" alt="[月亮]" data-w-e="1">晚上早点睡觉！！！<br></p>`,
-          star: 0,
-          forward: 0,
-          commit: 0,
-          praised: 0,
-        },
-        {
-          id: 4,
-          avatar: require("../../../assets/avatar.png"),
-          user: "天问",
-          time: "2020-07-18 22:35",
-          content: "<p>想吃好吃的！！！</p>",
-          star: 0,
-          forward: 0,
-          commit: 2,
-          praised: 3,
-        },
+        // {
+        //   id: 1,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "天问",
+        //   time: "2020-07-16 23:44",
+        //   content: "<p>要睡觉了！<br></p>",
+        //   star: 0,
+        //   forward: 0,
+        //   commit: 2,
+        //   praised: 3,
+        // },
       ],
     };
   },
 
+  created() {
+    this.$axios({
+      method: "get",
+      url: "/blog/all",
+    }).then((re) => {
+      // console.log(re);
+      if (re.data.code == "200") {
+        for (let i of re.data.data) {
+          this.$axios({
+            method: "get",
+            url: `/accountT/avatar/${i.accountID}`,
+          }).then((r) => {
+            // console.log(r);
+            i.avatar = `data:image/png;base64,${r.data.data}`;
+            this.blogs.push(i);
+          });
+        }
+
+        this.$axios({
+          method: "get",
+          url: "/accountT",
+        }).then((re) => {
+          if (re.data.code == "200") {
+            this.attention_num = re.data.data.followNum;
+            this.fan_num = re.data.data.fanNum;
+            this.blog_num = re.data.data.blogNum;
+          }
+        });
+      }
+    });
+  },
+
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
+
+    commit_num(data) {
+      this.blogs.filter((a) => {
+        if (a.blogID == data.id) {
+          a.commentNumber = data.num;
+        }
+      });
+
+      this.reload();
+    },
+
     go_userhome(user) {
       this.$router.push(`/myhome/${user}`);
     },
@@ -327,10 +361,19 @@ export default {
   border-right: 1px #d9d9d9 solid;
   box-sizing: border-box;
 }
+
+#forward:hover {
+  cursor: no-drop;
+  color: #919191;
+}
 </style>
 
 <style>
 .el-popover {
   padding: 0;
+}
+
+.el-popper {
+  background-color: #f2f2f5;
 }
 </style>

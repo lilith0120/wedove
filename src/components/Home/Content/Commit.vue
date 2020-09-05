@@ -1,5 +1,5 @@
 <template>
-  <div id="commit">
+  <div id="commit" v-if="isRouterAlive">
     <div id="add_commit">
       <el-input class="input" type="textarea" autosize v-model="commit"></el-input>
       <el-button id="btn" @click="send_commit(0)">评论</el-button>
@@ -31,7 +31,16 @@
                 <span class="c_tip" id="reply" slot="reference">回复</span>
               </el-popover>
 
-              <span class="c_tip" @click="go_praised(commit.commentID)">点赞</span>
+              <span
+                class="c_tip"
+                @click="go_praised(commit.commentID)"
+                title="赞"
+                v-if="commit.likeNumber == 0"
+              >点赞</span>
+              <span class="c_tip" title="赞" v-else>
+                <i class="iconfont icon-praised"></i>
+                {{commit.likeNumber}}
+              </span>
             </div>
           </div>
         </div>
@@ -50,102 +59,29 @@ export default {
     userCard,
   },
 
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
+
   data() {
     return {
+      isRouterAlive: true,
       commit: "",
       r_commit: {},
       isShow: [],
       commits: [
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 2,
-          blogID: 2,
-          accountID: 1,
-          name: "jiuge",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-30 14:41:05",
-          content: "评论一下博客",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
-        {
-          commentID: 1,
-          blogID: 2,
-          accountID: 1,
-          name: "天问",
-          likeNumber: 0,
-          receivedID: 0,
-          commentTime: "2020-08-22 11:13:46",
-          content: "来一个评论",
-        },
+        // {
+        //   commentID: 1,
+        //   blogID: 2,
+        //   accountID: 1,
+        //   name: "天问",
+        //   likeNumber: 0,
+        //   receivedID: 0,
+        //   commentTime: "2020-08-22 11:13:46",
+        //   content: "来一个评论",
+        // },
       ],
     };
   },
@@ -164,6 +100,13 @@ export default {
   },
 
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
+
     send_commit(id, num) {
       let data = {
         blogID: this.id,
@@ -188,6 +131,14 @@ export default {
         data: data,
       }).then((re) => {
         console.log(re);
+
+        let d = {
+          id: this.id,
+          num: re.data.data,
+        };
+
+        this.commit = "";
+        this.$emit("commit_num", d);
       });
     },
 
@@ -198,6 +149,12 @@ export default {
       }).then((re) => {
         if (re.data.code != "200") {
           this.$message.error("点赞失败！");
+        } else {
+          this.commits.filter((a) => {
+            if (a.commentID == id) {
+              a.likeNumber = re.data.data;
+            }
+          });
         }
       });
     },

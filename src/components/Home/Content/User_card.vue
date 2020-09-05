@@ -51,13 +51,17 @@ export default {
     isShow(newValue) {
       if (newValue) {
         // 查看资料，以及是否关注
-        // this.$axios({
-        //   method: '',
-        //   url: '',
-        //   data: data
-        // }).then(re => {
-        //   console.log(re)
-        // })
+        this.$axios({
+          method: "get",
+          url: "/followList/follow",
+        }).then((re) => {
+          for (let i in re.data.data) {
+            if (i.followID == this.id) {
+              this.isAttention = true;
+              break;
+            }
+          }
+        });
       }
     },
   },
@@ -65,21 +69,23 @@ export default {
   methods: {
     attention(e) {
       // 取消关注
-      // if (this.isAttention) {
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //   }).then((re) => {
-      this.isAttention = !this.isAttention;
-      //   });
-      // } else {
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //   }).then((re) => {
-      //     this.isAttention = !this.isAttention;
-      //   });
-      // }
+      if (this.isAttention) {
+        this.$axios({
+          method: "delete",
+          url: `/followList/${this.id}`,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") this.isAttention = !this.isAttention;
+        });
+      } else {
+        this.$axios({
+          method: "post",
+          url: `/followList/follow/${this.id}`,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") this.isAttention = !this.isAttention;
+        });
+      }
 
       let target = e.target;
       if (target.nodeName == "SPAN") {

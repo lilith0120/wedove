@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import store from "./store/store";
+
 export default {
   name: "App",
 
@@ -16,7 +18,15 @@ export default {
     return {};
   },
 
-  methods: {}
+  mounted() {
+    window.addEventListener("unload", this.saveState);
+  },
+
+  methods: {
+    saveState() {
+      localStorage.setItem("state", JSON.stringify(store.state));
+    },
+  },
 };
 </script>
 

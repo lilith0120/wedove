@@ -146,7 +146,6 @@ export default {
           }).then((re) => {
             if (re.data.code == "200") {
               store.commit("set_username", re.data.data.name);
-              console.log(store);
             }
           });
 

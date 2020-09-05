@@ -32,6 +32,7 @@ export default {
       isLogin: false,
       isMe: false,
       isAttention: false,
+      id: 0,
       avatar: require("../../assets/avatar.png"),
       username: "",
       signature: "",
@@ -44,19 +45,38 @@ export default {
       this.isMe = false;
     } else {
       this.isMe = true;
-    }
-
-    if (store.state.token != "") {
-      this.isLogin = true;
 
       this.$axios({
-        method: "",
-        url: "",
+        method: "get",
+        url: "/accountT",
       }).then((re) => {
         console.log(re);
+        if (re.data.code == "200") {
+          this.signature = re.data.data.individualitySignature;
+          this.id = re.data.data.accountID;
+
+          this.$axios({
+            method: "get",
+            url: `/accountT/avatar/${this.id}`,
+          }).then((re) => {
+            if (re.data.code == "200") {
+              this.avatar = `data:image/png;base64,${re.data.data}`;
+            }
+          });
+
+          this.$axios({
+            method: "get",
+            url: "/followList/follow",
+          }).then((re) => {
+            for (let i in re.data.data) {
+              if (i.followID == this.id) {
+                this.isAttention = true;
+                break;
+              }
+            }
+          });
+        }
       });
-    } else {
-      this.isLogin = false;
     }
   },
 
@@ -67,41 +87,62 @@ export default {
         this.isMe = false;
       } else {
         this.isMe = true;
+
+        this.$axios({
+          method: "get",
+          url: "/accountT",
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") {
+            this.signature = re.data.data.individualitySignature;
+            this.id = re.data.data.accountID;
+
+            this.$axios({
+              method: "get",
+              url: `/accountT/avatar/${this.id}`,
+            }).then((re) => {
+              if (re.data.code == "200") {
+                this.avatar = `data:image/png;base64,${re.data.data}`;
+              }
+            });
+
+            this.$axios({
+              method: "get",
+              url: "/followList/follow",
+            }).then((re) => {
+              for (let i in re.data.data) {
+                if (i.followID == this.id) {
+                  this.isAttention = true;
+                  break;
+                }
+              }
+            });
+          }
+        });
       }
-
-      // if (store.state.token != "") {
-      //   this.isLogin = true;
-      // } else {
-      //   this.isLogin = false;
-      // }
-
-      // this.$axios({
-      //   method: "",
-      //   url: "",
-      // }).then((re) => {
-      //   console.log(re);
-      // });
     },
   },
 
   methods: {
     attention(e) {
       // 取消关注
-      // if (this.isAttention) {
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //   }).then((re) => {
-      this.isAttention = !this.isAttention;
-      //   });
-      // } else {
-      //   this.$axios({
-      //     method: "",
-      //     url: "",
-      //   }).then((re) => {
-      //     this.isAttention = !this.isAttention;
-      //   });
-      // }
+      if (this.isAttention) {
+        this.$axios({
+          method: "delete",
+          url: `/followList/${this.id}`,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") this.isAttention = !this.isAttention;
+        });
+      } else {
+        this.$axios({
+          method: "post",
+          url: `/followList/follow/${this.id}`,
+        }).then((re) => {
+          console.log(re);
+          if (re.data.code == "200") this.isAttention = !this.isAttention;
+        });
+      }
 
       let target = e.target;
       if (target.nodeName == "SPAN") {

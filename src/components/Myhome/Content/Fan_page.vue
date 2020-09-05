@@ -91,24 +91,33 @@ export default {
       fan_num: 0,
       isShow: [],
       blogs: [
-        {
-          id: 1,
-          avatar: require("../../../assets/avatar.png"),
-          user: "天问",
-          attention_num: 233,
-          fan_num: 1,
-          blog_num: 11110,
-        },
-        {
-          id: 2,
-          avatar: require("../../../assets/avatar.png"),
-          user: "九歌",
-          attention_num: 112222,
-          fan_num: 1314,
-          blog_num: 12400,
-        },
+        // {
+        //   id: 1,
+        //   avatar: require("../../../assets/avatar.png"),
+        //   user: "天问",
+        //   attention_num: 233,
+        //   fan_num: 1,
+        //   blog_num: 11110,
+        // }
       ],
     };
+  },
+
+  created() {
+    this.$axios({
+      method: "get",
+      url: "/accountT",
+    }).then((re) => {
+      this.attention_num = re.data.data.followNum;
+      this.fan_num = re.data.data.fanNum;
+    });
+
+    // this.$axios({
+    //   method: "get",
+    //   url: "/followList/fan",
+    // }).then(re => {
+
+    // })
   },
 
   methods: {

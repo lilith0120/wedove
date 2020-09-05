@@ -85,14 +85,17 @@ export default {
     },
 
     get_code() {
-      alert("send");
+      console.log("send");
       this.isSend = true;
-      // this.$axios({
-      //   method: "",
-      //   url: ""
-      // }).then(re => {
-      //   console.log(re);
-      // });
+      this.$axios({
+        method: "get",
+        url: "/account/send/emaliVerification",
+        params: {
+          mailBox: this.email,
+        },
+      }).then((re) => {
+        console.log(re);
+      });
 
       let clock = setInterval(() => {
         this.time--;
@@ -182,9 +185,9 @@ export default {
         console.log(data);
 
         this.$axios({
-          method: "get",
+          method: "put",
           url: "/account/find/password",
-          params: data,
+          data: data,
         }).then((re) => {
           console.log(re);
           if (re.data.code == "200") {

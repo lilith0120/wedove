@@ -12,6 +12,7 @@
 <script>
 import Editor from "wangeditor";
 import At from "vue-at";
+import store from "../../store/store";
 
 export default {
   name: "Editor",
@@ -60,8 +61,8 @@ export default {
 
         // 上传图片的api和文件名
         editor.customConfig.showLinkImg = false;
-        editor.customConfig.uploadImgServer = "#";
-        editor.customConfig.uploadFileName = "file";
+        editor.customConfig.uploadImgServer = "/blog/picture";
+        editor.customConfig.uploadFileName = "picture";
         editor.customConfig.customAlert = (info) => {
           this.$message.error(info);
         };
@@ -76,12 +77,20 @@ export default {
             console.log(result);
           },
           // 图片上传并返回结果，但图片插入错误时触发
-          fail() {
-            this.$message.error("图片插入失败！");
+          fail(xhr, editor, result) {
+            console.log(xhr);
+            console.log(editor);
+            console.log(result);
+            // this.$message.error("图片插入失败！");
           },
           // 图片上传出错时触发
           error() {
             this.$message.error("图片上传失败！");
+          },
+
+          customInsert(insertImg, result) {
+            let url = result.msg;
+            insertImg(url);
           },
         };
 
@@ -90,6 +99,16 @@ export default {
     },
 
     send_blog() {
+      if (store.state.username == "") {
+        this.$message({
+          message: "请先登录！",
+          type: "warning",
+          duration: 2000,
+        });
+
+        return;
+      }
+
       if (this.blog == "" || this.blog == "<p><br></p>") {
         this.$message({
           message: "你什么都还没输入哦！",
@@ -148,7 +167,12 @@ export default {
   margin-top: 1.5%;
   margin-left: 1.5%;
   width: 97%;
-  height: 80px;
+  min-height: 80px;
+  /* height: 80px; */
+}
+
+.toolbar >>> .w-e-text {
+  min-height: 80px;
 }
 
 #btn {

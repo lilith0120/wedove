@@ -1,5 +1,5 @@
 <template>
-  <div id="main_page" v-if="isRouterAlive">
+  <div id="main_page">
     <div id="s_blog">
       <Editor @send_blog="send_blog"></Editor>
     </div>
@@ -27,10 +27,10 @@
 
       <div class="b_bottom">
         <ul>
-          <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.star, 1)">
+          <li class="b_tips" id="star" @click="get_up(blog.blogID, blog.collectNumber, 1)">
             <i class="iconfont icon-star">
-              <span class="b_tip">收藏</span>
-              <!-- <span class="b_tip" v-else>{{blog.star}}</span> -->
+              <span class="b_tip" v-if="blog.collectNumber == 0">收藏</span>
+              <span class="b_tip" v-else>{{blog.collectNumber}}</span>
             </i>
           </li>
           <li class="b_tips" id="forward" @click="go_blog(blog.blogID, 1)">
@@ -40,7 +40,7 @@
             </i>
           </li>
           <el-popover class="com" placement="bottom-end" width="600" :offset="152" trigger="click">
-            <Commit :id="blog.blogID"></Commit>
+            <Commit :id="blog.blogID" @commit_num="commit_num" v-if="isRouterAlive"></Commit>
             <li class="b_tips" id="commit" slot="reference">
               <i class="iconfont icon-commit">
                 <span class="b_tip" v-if="blog.commentNumber == 0">评论</span>
@@ -65,6 +65,7 @@
 import Editor from "../../Editor/Editor";
 import userCard from "../Content/User_card";
 import Commit from "../Content/Commit";
+import store from "../../../store/store";
 
 export default {
   name: "Main_page",
@@ -93,7 +94,7 @@ export default {
   created() {
     this.$axios({
       method: "get",
-      url: "/blog/all",
+      url: "/blog",
     }).then((re) => {
       // console.log(re);
       if (re.data.code == "200") {
@@ -128,6 +129,17 @@ export default {
     },
 
     send_blog() {
+      // this.reload();
+      this.$router.go(0);
+    },
+
+    commit_num(data) {
+      this.blogs.filter((a) => {
+        if (a.blogID == data.id) {
+          a.commentNumber = data.num;
+        }
+      });
+
       this.reload();
     },
 
@@ -136,20 +148,40 @@ export default {
     },
 
     get_up(id, num, type) {
-      // 保存点赞(收藏)记录
-      this.$axios({
-        method: "put",
-        url: `/blog/like/${id}`,
-      }).then((re) => {
-        console.log(re);
-        this.blogs.filter((a) => {
-          if (a.id == id && type == 1) {
-            a.star = re.data.data;
-          } else if (a.id == id && type == 2) {
-            a.praised = re.data.data;
-          }
+      if (store.state.username == "") {
+        this.$message({
+          message: "请先登录！",
+          type: "warning",
         });
-      });
+
+        return;
+      }
+
+      if (type == 1) {
+        this.$axios({
+          method: "put",
+          url: `/blog/collect/${id}`,
+        }).then((re) => {
+          console.log(re);
+          this.blogs.filter((a) => {
+            if (a.blogID == id) {
+              a.collectNumber = re.data.data;
+            }
+          });
+        });
+      } else {
+        this.$axios({
+          method: "put",
+          url: `/blog/like/${id}`,
+        }).then((re) => {
+          console.log(re);
+          this.blogs.filter((a) => {
+            if (a.blogID == id) {
+              a.likeNumber = re.data.data;
+            }
+          });
+        });
+      }
     },
 
     // go_blog(id, type) {
@@ -173,7 +205,7 @@ export default {
   /* border: 1px red solid;
   box-sizing: border-box; */
   border-radius: 2px;
-  height: 165px;
+  min-height: 165px;
   background-color: #fff;
 }
 
@@ -283,7 +315,7 @@ export default {
   box-sizing: border-box;
 }
 
-#star:hover {
+#forward:hover {
   cursor: no-drop;
   color: #919191;
 }
